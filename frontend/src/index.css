@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-bg: #f4efe7;
+  --color-surface: #fffdf8;
+  --color-surface-muted: #f8f2e7;
+  --color-border: rgba(15, 23, 42, 0.08);
+  --color-text: #0f172a;
+  --color-subtle: #64748b;
+  font-family:
+    'SF Pro Display',
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(217, 119, 6, 0.08), transparent 28%),
+    linear-gradient(180deg, #fbf7f0 0%, #f4efe7 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+@layer utilities {
+  .card-surface {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: theme('boxShadow.card');
+  }
+}
