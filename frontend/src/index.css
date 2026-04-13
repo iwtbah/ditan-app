@@ -1,3 +1,7 @@
+/*
+ * 全局样式入口。
+ * 负责注入 Tailwind、基础设计变量、通用元素 reset 和少量全局 utility。
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,29 +26,45 @@
   background-color: var(--color-bg);
 }
 
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background:
+      radial-gradient(circle at top left, rgba(217, 119, 6, 0.08), transparent 28%),
+      linear-gradient(180deg, #fbf7f0 0%, #f4efe7 100%);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
 html,
 body,
 #root {
   min-height: 100%;
-}
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at top left, rgba(217, 119, 6, 0.08), transparent 28%),
-    linear-gradient(180deg, #fbf7f0 0%, #f4efe7 100%);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
 }
 
 @layer utilities {
@@ -52,5 +72,9 @@ select {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     box-shadow: theme('boxShadow.card');
+  }
+
+  .page-skeleton-block {
+    @apply rounded-xl border border-dashed border-slate-200 bg-white/70 p-4 text-sm text-slate-500;
   }
 }

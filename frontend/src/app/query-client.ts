@@ -1,3 +1,7 @@
+/**
+ * TanStack Query 客户端实例。
+ * 统一定义默认缓存策略，避免在页面或 feature 中散落重复配置。
+ */
 import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({

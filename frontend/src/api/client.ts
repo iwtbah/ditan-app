@@ -1,3 +1,7 @@
+/**
+ * API 基础请求层。
+ * 统一处理 baseURL、query 参数、JSON 序列化和鉴权头，业务请求按模块继续向上封装。
+ */
 import { useAuthStore } from '@/stores/auth-store';
 import type { ApiEnvelope } from '@/types';
 

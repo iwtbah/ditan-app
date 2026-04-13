@@ -1,3 +1,7 @@
+/**
+ * 登录态本地存储示例。
+ * 这里只保留 token 和当前用户概要，不把服务端详情列表塞进本地 store。
+ */
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import type { SessionSummary } from '@/types';

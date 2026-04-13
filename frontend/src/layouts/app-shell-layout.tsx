@@ -1,6 +1,10 @@
+/**
+ * 应用主壳布局。
+ * 提供顶部导航、底部导航和页面承载区域，业务内容通过路由 Outlet 注入。
+ */
 import { NavLink, Outlet } from 'react-router-dom';
 import { ROUTE_PATHS } from '@/constants/routes';
-import { useUiStore } from '@/stores/ui-store';
+import { useAppStore } from '@/stores/app-store';
 import { cn } from '@/utils/cn';
 
 const navItems = [
@@ -10,14 +14,14 @@ const navItems = [
 ];
 
 export function AppShellLayout() {
-  const pageTitle = useUiStore((state) => state.pageTitle);
+  const pageTitle = useAppStore((state) => state.pageTitle);
 
   return (
     <div className="min-h-screen text-slate-900">
       <header className="sticky top-0 z-20 border-b border-black/5 bg-[rgba(255,253,248,0.92)] backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <NavLink className="text-lg font-semibold tracking-tight" to={ROUTE_PATHS.home}>
-            地探
+            迪探
           </NavLink>
           <div className="text-sm text-slate-500">{pageTitle || '城市探店与点评社区'}</div>
         </div>

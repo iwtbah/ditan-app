@@ -1,3 +1,7 @@
+/**
+ * 认证页布局。
+ * 与主应用布局分离，便于登录、注册、找回密码等页面后续独立扩展。
+ */
 import { Outlet } from 'react-router-dom';
 
 export function AuthLayout() {
