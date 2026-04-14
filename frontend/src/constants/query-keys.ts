@@ -1,8 +1,16 @@
 import type { SearchFilters } from '@/types';
 
 export const queryKeys = {
+  ditan: {
+    discovery: ['ditan', 'discovery'] as const,
+  },
   home: {
+    discovery: ['home', 'discovery'] as const,
     feed: ['home', 'feed'] as const,
+  },
+  social: {
+    following: ['social', 'following'] as const,
+    myProfileView: ['social', 'my-profile-view'] as const,
   },
   shops: {
     detail: (shopId: string) => ['shops', 'detail', shopId] as const,

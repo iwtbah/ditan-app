@@ -5,7 +5,7 @@
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/app-store';
 
-const APP_NAME = '地探';
+const APP_NAME = '迪探';
 
 export function usePageTitle(title: string) {
   useEffect(() => {

@@ -1,3 +1,5 @@
+import type { FeaturedNotePreview, CommentCardData, RecommendedDish, ShopCoupon } from '@/types/engagement';
+
 export interface ShopTag {
   id: string;
   label: string;
@@ -21,5 +23,12 @@ export interface ShopDetail extends ShopSummary {
   noteCount: number;
   commentCount: number;
   photoUrls: string[];
+  distance?: string;
+  walkTime?: string;
+  rankingText?: string;
+  coupons: ShopCoupon[];
+  recommendedDishes: RecommendedDish[];
+  reviews: CommentCardData[];
+  selectedNotes: FeaturedNotePreview[];
   liked?: boolean;
 }

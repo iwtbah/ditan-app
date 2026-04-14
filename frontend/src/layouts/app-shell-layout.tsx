@@ -1,55 +1,24 @@
-/**
- * 应用主壳布局。
- * 提供顶部导航、底部导航和页面承载区域，业务内容通过路由 Outlet 注入。
- */
-import { NavLink, Outlet } from 'react-router-dom';
-import { ROUTE_PATHS } from '@/constants/routes';
-import { useAppStore } from '@/stores/app-store';
-import { cn } from '@/utils/cn';
-
-const navItems = [
-  { to: ROUTE_PATHS.home, label: '首页', end: true },
-  { to: ROUTE_PATHS.search, label: '搜索' },
-  { to: ROUTE_PATHS.my, label: '我的' },
-];
+import { useLocation, useOutlet } from 'react-router-dom';
+import { MobileBottomNav } from '@/components/navigation/mobile-bottom-nav';
 
 export function AppShellLayout() {
-  const pageTitle = useAppStore((state) => state.pageTitle);
+  const location = useLocation();
+  const outlet = useOutlet();
+  const shouldHideTabBar =
+    location.pathname.startsWith('/shops/') ||
+    location.pathname.startsWith('/notes/') ||
+    location.pathname === '/publish';
 
   return (
-    <div className="min-h-screen text-slate-900">
-      <header className="sticky top-0 z-20 border-b border-black/5 bg-[rgba(255,253,248,0.92)] backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <NavLink className="text-lg font-semibold tracking-tight" to={ROUTE_PATHS.home}>
-            迪探
-          </NavLink>
-          <div className="text-sm text-slate-500">{pageTitle || '城市探店与点评社区'}</div>
+    <div className="min-h-screen bg-background md:px-6 md:py-6">
+      <div className="relative mx-auto flex min-h-screen max-w-[430px] flex-col bg-background ring-1 ring-border/40 md:min-h-[860px] md:rounded-[3rem] md:border-[12px] md:border-gray-900 md:shadow-2xl">
+        <div className="flex-1 overflow-hidden md:rounded-[calc(3rem-12px)]">
+          <div key={location.pathname} className="page-route-transition h-full">
+            {outlet}
+          </div>
         </div>
-      </header>
-
-      <div className="mx-auto max-w-6xl px-4 py-6 pb-24">
-        <Outlet />
+        {shouldHideTabBar ? null : <MobileBottomNav />}
       </div>
-
-      <nav className="fixed bottom-0 left-0 right-0 border-t border-black/5 bg-[rgba(255,253,248,0.96)] backdrop-blur md:hidden">
-        <div className="mx-auto flex max-w-xl items-center justify-around px-4 py-3">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              className={({ isActive }) =>
-                cn(
-                  'rounded-full px-4 py-2 text-sm transition-colors',
-                  isActive ? 'bg-brand-600 text-white' : 'text-slate-500',
-                )
-              }
-              end={item.end}
-              to={item.to}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-      </nav>
     </div>
   );
 }

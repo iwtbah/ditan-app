@@ -8,10 +8,13 @@ import { ROUTE_PATHS } from '@/constants/routes';
 import { AppShellLayout } from '@/layouts/app-shell-layout';
 import { AuthLayout } from '@/layouts/auth-layout';
 import { LoginPage } from '@/pages/auth/login';
+import { DitanPage } from '@/pages/ditan';
+import { FollowingPage } from '@/pages/following';
 import { HomePage } from '@/pages/home';
 import { MyPage } from '@/pages/me';
 import { NoteDetailPage } from '@/pages/notes/detail';
 import { NotFoundPage } from '@/pages/not-found';
+import { PublishPage } from '@/pages/publish';
 import { SearchPage } from '@/pages/search';
 import { ShopDetailPage } from '@/pages/shops/detail';
 import { UserProfilePage } from '@/pages/users/profile';
@@ -25,6 +28,18 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: 'ditan',
+        element: <DitanPage />,
+      },
+      {
+        path: 'publish',
+        element: <PublishPage />,
+      },
+      {
+        path: 'following',
+        element: <FollowingPage />,
       },
       {
         path: 'search',

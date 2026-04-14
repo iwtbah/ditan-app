@@ -1,3 +1,4 @@
+import type { CommentCardData } from '@/types/engagement';
 import type { ShopSummary } from '@/types/shop';
 import type { UserSummary } from '@/types/user';
 
@@ -16,6 +17,12 @@ export interface NoteCard {
 
 export interface NoteDetail extends NoteCard {
   content: string;
+  contentBlocks?: string[];
   imageUrls: string[];
   tags: string[];
+  authorLocation?: string;
+  editedAt?: string;
+  favoriteCount: number;
+  likedAvatarUrls: string[];
+  comments: CommentCardData[];
 }
