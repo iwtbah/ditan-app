@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { useViewStateContext } from "@/contexts/view-state-context";
 import type { AsyncViewState } from "@/types/common";
-import { useStateContext } from "@/prototype/context/StateContext";
 import { MeContentPanel, MeProfileCard } from "./components";
 
 export const Me = () => {
-  const { appState } = useStateContext() as { appState: AsyncViewState };
+  const { appState } = useViewStateContext() as { appState: AsyncViewState };
   const [activeTab, setActiveTab] = useState("笔记");
   const [subFilter, setSubFilter] = useState("全部");
 

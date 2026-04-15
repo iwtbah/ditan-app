@@ -1,10 +1,10 @@
 import React from "react";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AvatarPlaceholder, ImagePlaceholder } from "@/components/feedback/wireframe-ui";
 import { ROUTE_PATHS } from "@/constants/routes";
 import type { NoteComment, NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
-import { AvatarPlaceholder, ImagePlaceholder } from "@/prototype/components/WireframeUI";
 import { LikeButton } from "./interactive";
 
 type FeedCardProps = Pick<NoteCardData, "author" | "authorAvatar" | "id" | "image" | "liked" | "likes" | "title"> & {

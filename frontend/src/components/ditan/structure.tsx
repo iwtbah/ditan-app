@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "motion/react";
 import { NavLink, useLocation } from "react-router-dom";
+import { EmptyState, ErrorState } from "@/components/feedback/wireframe-ui";
 import { MapPin, Plus, Search } from "lucide-react";
 import type { AsyncViewState, TabBarItem } from "@/types/common";
-import { EmptyState, ErrorState } from "@/prototype/components/WireframeUI";
 
 type HeaderProps = {
   autoFocus?: boolean;

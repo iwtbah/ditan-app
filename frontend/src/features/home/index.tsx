@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
+import { useViewStateContext } from "@/contexts/view-state-context";
 import type { AsyncViewState } from "@/types/common";
-import { useStateContext } from "@/prototype/context/StateContext";
 import { HomeFeed, HomeHeader } from "./components";
 
 export const Home = () => {
-  const { appState } = useStateContext() as { appState: AsyncViewState };
+  const { appState } = useViewStateContext() as { appState: AsyncViewState };
   const navigate = useNavigate();
   const [contentType, setContentType] = useState("探店日记");
   const [activeCategory, setActiveCategory] = useState("推荐");

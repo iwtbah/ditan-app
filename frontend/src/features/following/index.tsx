@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
+import { useViewStateContext } from "@/contexts/view-state-context";
 import type { AsyncViewState } from "@/types/common";
-import { useStateContext } from "@/prototype/context/StateContext";
 import { FollowingContent, FollowingHeader } from "./components";
 import { FOLLOWING_FEEDS } from "./mocks";
 
 export const Following = () => {
-  const { appState } = useStateContext() as { appState: AsyncViewState };
+  const { appState } = useViewStateContext() as { appState: AsyncViewState };
   const [filter, setFilter] = useState("全部");
   const navigate = useNavigate();
 

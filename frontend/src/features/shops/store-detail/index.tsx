@@ -3,9 +3,9 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { ListContainer } from "@/components/ditan";
+import { Skeleton } from "@/components/feedback/wireframe-ui";
+import { useViewStateContext } from "@/contexts/view-state-context";
 import type { AsyncViewState } from "@/types/common";
-import { Skeleton } from "@/prototype/components/WireframeUI";
-import { useStateContext } from "@/prototype/context/StateContext";
 import {
   STORE_DETAIL_ALL_NOTES,
   STORE_DETAIL_COUPONS,
@@ -23,7 +23,7 @@ import {
 
 export const StoreDetail = () => {
   const navigate = useNavigate();
-  const { appState } = useStateContext() as { appState: AsyncViewState };
+  const { appState } = useViewStateContext() as { appState: AsyncViewState };
   const [isCollected, setIsCollected] = useState(false);
   const [isCouponOpen, setIsCouponOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

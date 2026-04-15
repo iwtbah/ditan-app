@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "@/prototype/components/WireframeUI";
+import { Skeleton } from "@/components/feedback/wireframe-ui";
 
 type HomeSkeletonNoteProps = {
   height: string;

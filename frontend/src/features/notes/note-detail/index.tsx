@@ -3,10 +3,10 @@ import { useScroll, useTransform } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { ListContainer } from "@/components/ditan";
+import { Skeleton } from "@/components/feedback/wireframe-ui";
+import { useViewStateContext } from "@/contexts/view-state-context";
 import type { AsyncViewState } from "@/types/common";
 import type { NoteComment } from "@/types/note";
-import { Skeleton } from "@/prototype/components/WireframeUI";
-import { useStateContext } from "@/prototype/context/StateContext";
 import {
   NOTE_DETAIL_INITIAL_COMMENTS,
   NOTE_DETAIL_MOCK_NOTE,
@@ -21,7 +21,7 @@ import {
 
 export const NoteDetail = () => {
   const navigate = useNavigate();
-  const { appState } = useStateContext() as { appState: AsyncViewState };
+  const { appState } = useViewStateContext() as { appState: AsyncViewState };
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [followState, setFollowState] = useState(0);
   const [isLiked, setIsLiked] = useState(false);

@@ -1,8 +1,8 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
+import { Skeleton } from "@/components/feedback/wireframe-ui";
 import type { AsyncViewState } from "@/types/common";
-import { Skeleton } from "@/prototype/components/WireframeUI";
 import { HOME_NOTES, HOME_SHOPS } from "../mocks";
 import { HomeSkeletonNote } from "./home-skeleton-note";
 
