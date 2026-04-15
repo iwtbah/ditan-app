@@ -1,3 +1,1 @@
-export * from './Interactive';
-export * from './ContentCards';
-export * from './Structure';
+export * from "@/components/ditan";

@@ -15,13 +15,13 @@ import { Search } from '@/prototype/pages/Search';
 import { StoreDetail } from '@/prototype/pages/StoreDetail';
 
 function LegacyNoteRedirect() {
-  const { noteId = '' } = useParams();
-  return <Navigate replace to={ROUTE_PATHS.noteDetail(noteId)} />;
+  const { id = '' } = useParams();
+  return <Navigate replace to={ROUTE_PATHS.noteDetail(id)} />;
 }
 
 function LegacyStoreRedirect() {
-  const { shopId = '' } = useParams();
-  return <Navigate replace to={ROUTE_PATHS.storeDetail(shopId)} />;
+  const { id = '' } = useParams();
+  return <Navigate replace to={ROUTE_PATHS.shopDetail(id)} />;
 }
 
 export const router = createBrowserRouter([
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
             element: <Publish />,
           },
           {
-            path: ROUTE_PATHS.profile.slice(1),
+            path: ROUTE_PATHS.my.slice(1),
             element: <Profile />,
           },
           {
@@ -62,32 +62,32 @@ export const router = createBrowserRouter([
             element: <Search />,
           },
           {
-            path: 'note/:id',
+            path: ROUTE_PATHS.noteDetail().slice(1),
             element: <NoteDetail />,
           },
           {
-            path: 'store/:id',
+            path: ROUTE_PATHS.shopDetail().slice(1),
             element: <StoreDetail />,
           },
           {
-            path: 'me',
-            element: <Navigate replace to={ROUTE_PATHS.profile} />,
+            path: ROUTE_PATHS.legacyProfile.slice(1),
+            element: <Navigate replace to={ROUTE_PATHS.my} />,
           },
           {
-            path: 'users/:userId',
-            element: <Navigate replace to={ROUTE_PATHS.profile} />,
-          },
-          {
-            path: 'notes/:noteId',
+            path: ROUTE_PATHS.legacyNoteDetail().slice(1),
             element: <LegacyNoteRedirect />,
           },
           {
-            path: 'shops/:shopId',
+            path: ROUTE_PATHS.legacyShopDetail().slice(1),
             element: <LegacyStoreRedirect />,
           },
           {
-            path: 'auth/login',
-            element: <Navigate replace to={ROUTE_PATHS.profile} />,
+            path: ROUTE_PATHS.userProfile().slice(1),
+            element: <Navigate replace to={ROUTE_PATHS.my} />,
+          },
+          {
+            path: ROUTE_PATHS.login.slice(1),
+            element: <Navigate replace to={ROUTE_PATHS.my} />,
           },
         ],
       },

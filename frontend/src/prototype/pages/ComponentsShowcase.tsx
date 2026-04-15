@@ -1,4 +1,5 @@
 import React from 'react';
+import { ROUTE_PATHS } from '@/constants/routes';
 import { FeedCard, ShopCard, CommentItem } from '../components/ditan/ContentCards';
 import { LikeButton, FollowButton, PublishButton } from '../components/ditan/Interactive';
 import { Header, CategoryTabs } from '../components/ditan/Structure';
@@ -8,14 +9,14 @@ import { useNavigate } from 'react-router-dom';
 export const ComponentsShowcase = () => {
   const navigate = useNavigate();
 
-  const Section = ({ title, children }: any) => (
+  const Section = ({ title, children }: React.PropsWithChildren<{ title: string }>) => (
     <div className="mb-10">
       <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">{title}</h3>
       <div className="space-y-6">{children}</div>
     </div>
   );
 
-  const Variant = ({ name, children }: any) => (
+  const Variant = ({ name, children }: React.PropsWithChildren<{ name: string }>) => (
     <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 flex flex-col gap-3 shadow-sm">
       <span className="text-[11px] font-mono font-bold text-gray-600 bg-white px-2 py-1 rounded border border-gray-100 shadow-sm inline-block w-max">
         {name}
@@ -32,7 +33,7 @@ export const ComponentsShowcase = () => {
         <div className="flex items-center gap-2">
             <Layout size={16} className="text-indigo-300" /> COMPONENT PANEL
         </div>
-        <button onClick={() => navigate('/')} className="flex items-center text-indigo-200 hover:text-white">
+        <button onClick={() => navigate(ROUTE_PATHS.home)} className="flex items-center text-indigo-200 hover:text-white">
             <ChevronLeft size={16} /> 返回
         </button>
       </div>
@@ -46,29 +47,29 @@ export const ComponentsShowcase = () => {
         <Section title="Content / FeedCard (探店笔记卡片)">
           <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
             <Variant name="FeedCard / Default">
-              <div className="w-[160px]"><FeedCard imageClassName="h-32" title="超赞的周末下午茶推荐" author="探店小能手" likes={128} liked={false} /></div>
+              <div className="w-[160px]"><FeedCard id={1} imageClassName="h-32" title="超赞的周末下午茶推荐" author="探店小能手" likes={128} liked={false} /></div>
             </Variant>
             <Variant name="FeedCard / Liked">
-              <div className="w-[160px]"><FeedCard imageClassName="h-32" title="胡同里的宝藏咖啡馆，随便拍绝绝子" author="咖啡星人" likes={342} liked={true} /></div>
+              <div className="w-[160px]"><FeedCard id={2} imageClassName="h-32" title="胡同里的宝藏咖啡馆，随便拍绝绝子" author="咖啡星人" likes={342} liked={true} /></div>
             </Variant>
           </div>
         </Section>
 
         <Section title="Content / ShopCard (店铺卡片)">
           <Variant name="ShopCard / Default">
-            <ShopCard name="时光机复古杂货铺" rating="4.8" distance="2.4km" />
+            <ShopCard id={1} name="时光机复古杂货铺" rating="4.8" distance="2.4km" price="" recommendation="" image="" tags={[]} />
           </Variant>
           <Variant name="ShopCard / WithTags">
-            <ShopCard name="半岛咖啡馆" rating="4.9" distance="1.1km" tags={['出片圣地', '安静', '下午茶']} />
+            <ShopCard id={2} name="半岛咖啡馆" rating="4.9" distance="1.1km" price="" recommendation="" image="" tags={['出片圣地', '安静', '下午茶']} />
           </Variant>
         </Section>
 
         <Section title="Content / CommentItem (评论项)">
           <Variant name="CommentItem / Default">
-            <CommentItem author="抹茶不加糖" content="请问具体位置在哪里呀？周末想去。" time="2小时前" likes={12} liked={false} />
+            <CommentItem id={1} author="抹茶不加糖" content="请问具体位置在哪里呀？周末想去。" time="2小时前" likes={12} liked={false} hasReply={false} />
           </Variant>
           <Variant name="CommentItem / Liked & Reply">
-            <CommentItem author="夏日限定" content="真的很好看！老板人也很好。" time="昨天 18:00" likes={45} liked={true} hasReply={true} />
+            <CommentItem id={2} author="夏日限定" content="真的很好看！老板人也很好。" time="昨天 18:00" likes={45} liked={true} hasReply={true} />
           </Variant>
         </Section>
 
@@ -121,4 +122,6 @@ export const ComponentsShowcase = () => {
       </div>
     </div>
   );
-}
+};
+
+export default ComponentsShowcase;
