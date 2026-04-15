@@ -1,0 +1,267 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Colors */
+  --primary: #4A5D5A;
+  --secondary: #F0F4F2;
+  --background: #FAFAFA;
+  --text-primary: #1A1C1B;
+  --text-secondary: #747A78;
+  --text-tertiary: #A3ACA9;
+  --success: #34C759;
+  --error: #FF3B30;
+  --warning: #FF9500;
+  
+  --foreground: #1A1C1B;
+  --card: #FFFFFF;
+  --card-foreground: #1A1C1B;
+  --popover: rgba(255, 255, 255, 0.85);
+  --popover-foreground: #1A1C1B;
+  --primary-foreground: #FFFFFF;
+  --secondary-foreground: #1A1C1B;
+  --muted: #F3F5F4;
+  --muted-foreground: #747A78;
+  --accent: #E8ECEB;
+  --accent-foreground: #1A1C1B;
+  --destructive: #FF3B30;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.06);
+  --input: rgba(0, 0, 0, 0.04);
+  --ring: rgba(74, 93, 90, 0.3);
+
+  /* Typography */
+  --font-size-h1: 24px;
+  --line-height-h1: 32px;
+  --font-weight-h1: 600;
+
+  --font-size-h2: 18px;
+  --line-height-h2: 26px;
+  --font-weight-h2: 600;
+
+  --font-size-h3: 16px;
+  --line-height-h3: 24px;
+  --font-weight-h3: 600;
+
+  --font-size-body: 14px;
+  --line-height-body: 20px;
+  --font-weight-body: 400;
+
+  --font-size-caption: 12px;
+  --line-height-caption: 16px;
+  --font-weight-caption: 400;
+
+  /* Spacing */
+  --spacing-xs: 6px;
+  --spacing-sm: 10px;
+  --spacing-md: 14px;
+  --spacing-lg: 18px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  /* Colors */
+  --primary: #6E8884;
+  --secondary: #262B2A;
+  --background: #111212;
+  --text-primary: #F0F2F1;
+  --text-secondary: #9BA3A0;
+  --text-tertiary: #6E7573;
+  --success: #30D158;
+  --error: #FF453A;
+  --warning: #FF9F0A;
+
+  --foreground: #F0F2F1;
+  --card: #181A19;
+  --card-foreground: #F0F2F1;
+  --popover: rgba(24, 26, 25, 0.85);
+  --popover-foreground: #F0F2F1;
+  --primary-foreground: #FFFFFF;
+  --secondary-foreground: #F0F2F1;
+  --muted: #212423;
+  --muted-foreground: #9BA3A0;
+  --accent: #2B302F;
+  --accent-foreground: #F0F2F1;
+  --destructive: #FF453A;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: rgba(110, 136, 132, 0.3);
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --spacing-xs: var(--spacing-xs);
+  --spacing-sm: var(--spacing-sm);
+  --spacing-md: var(--spacing-md);
+  --spacing-lg: var(--spacing-lg);
+  --spacing-xl: var(--spacing-xl);
+  --spacing-2xl: var(--spacing-2xl);
+
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-card: var(--shadow-card);
+  --shadow-modal: var(--shadow-modal);
+}
+
+@layer utilities {
+  .text-h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: var(--font-weight-h1);
+  }
+  .text-h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+    font-weight: var(--font-weight-h2);
+  }
+  .text-h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: var(--font-weight-h3);
+  }
+  .text-body {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-body);
+  }
+  .text-caption {
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    font-weight: var(--font-weight-caption);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-h1);
+    line-height: var(--line-height-h1);
+    color: var(--color-text-primary);
+  }
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-h2);
+    line-height: var(--line-height-h2);
+    color: var(--color-text-primary);
+  }
+
+  h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-h3);
+    line-height: var(--line-height-h3);
+    color: var(--color-text-primary);
+  }
+
+  h4 {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+  }
+
+  p {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-secondary);
+  }
+
+  label {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+  }
+
+  button {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+  }
+
+  input, textarea {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
