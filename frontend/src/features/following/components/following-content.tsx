@@ -2,6 +2,7 @@ import React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Heart, MapPin, MessageSquare, MoreHorizontal, Share, Star, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PullEndScrollArea } from "@/components/ditan";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { ErrorState } from "@/components/feedback/wireframe-ui";
 import type { AsyncViewState } from "@/types/common";
@@ -16,10 +17,15 @@ type FollowingContentProps = {
 
 export const FollowingContent = ({ feeds, onGoHome, onRetry, state }: FollowingContentProps) => {
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar bg-muted/20 relative pb-[90px]">
+    <PullEndScrollArea
+      enabled={state === "Normal"}
+      wrapperClassName="flex-1 relative overflow-hidden bg-muted/20"
+      endHintBottomClassName="bottom-[92px]"
+      scrollClassName="h-full overflow-y-auto no-scrollbar overscroll-y-contain relative pb-[90px]"
+    >
       <AnimatePresence mode="wait">
         {state === "Loading" ? (
-          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-4 space-y-4">
+          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-4 space-y-4">
             {[1, 2].map((item) => (
               <div key={item} className="bg-card rounded-[16px] shadow-[0_2px_16px_rgba(0,0,0,0.03)] border border-border/40 p-4 mx-4 animate-pulse">
                 <div className="flex items-center gap-3 mb-4">
@@ -73,7 +79,7 @@ export const FollowingContent = ({ feeds, onGoHome, onRetry, state }: FollowingC
             </button>
           </motion.div>
         ) : (
-          <motion.div key="content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-4 space-y-4">
+          <motion.div key="content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-4 space-y-4">
             {feeds.map((feed) => (
               <div key={feed.id} className="bg-card rounded-[16px] shadow-[0_2px_16px_rgba(0,0,0,0.03)] border border-border/40 mx-4 overflow-hidden">
                 <div className="flex items-center justify-between p-4 pb-3">
@@ -141,10 +147,9 @@ export const FollowingContent = ({ feeds, onGoHome, onRetry, state }: FollowingC
                 </div>
               </div>
             ))}
-            <div className="py-6 text-center text-[12px] font-bold tracking-widest text-text-tertiary">- 没有更多动态了 -</div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </PullEndScrollArea>
   );
 };

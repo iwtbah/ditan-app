@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
+import { bottomGlassBarBaseClassName } from "@/components/ditan";
 import { Edit3, Navigation, Star } from "lucide-react";
 
 type StoreDetailActionBarProps = {
@@ -13,7 +14,7 @@ export const StoreDetailActionBar = ({ isCollected, onToggleCollected }: StoreDe
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2 }}
-      className="absolute bottom-0 inset-x-0 bg-background/80 backdrop-blur-2xl border-t border-border/40 px-5 py-3 pb-safe flex items-center gap-6 z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]"
+      className={`${bottomGlassBarBaseClassName} backdrop-blur-2xl px-5 py-3 pb-safe flex items-center gap-6 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]`}
     >
       <div className="flex gap-5 pl-1 shrink-0">
         <button onClick={onToggleCollected} className="flex flex-col items-center justify-center gap-1 text-text-secondary active:scale-90 transition-transform">

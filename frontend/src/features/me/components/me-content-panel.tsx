@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
+import { FeedCard, ListContainer, ShopCard, profilePanelClassName } from "@/components/ditan";
 import type { AsyncViewState } from "@/types/common";
 import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
@@ -26,8 +26,11 @@ export const MeContentPanel = ({
   onSubFilterChange,
   onTabChange,
 }: MeContentPanelProps) => {
+  const showNotes = activeTab === "笔记" || (activeTab !== "笔记" && (subFilter === "全部" || subFilter === "笔记"));
+  const showShops = activeTab !== "笔记" && (subFilter === "全部" || subFilter === "店铺");
+
   return (
-    <div className="bg-card rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.04)] border border-border/40 overflow-hidden flex flex-col min-h-[500px]">
+    <div className={`${profilePanelClassName} overflow-hidden flex flex-col min-h-[500px]`}>
       <div className="flex border-b border-border/40 text-[15px] font-bold px-2 pt-2">
         {["笔记", "收藏", "赞过"].map((tab) => (
           <button
@@ -65,7 +68,7 @@ export const MeContentPanel = ({
       )}
 
       <ListContainer state={appState} className="flex-1 bg-muted/10 p-3" onRetry={onRetry}>
-        {(activeTab === "笔记" || (activeTab !== "笔记" && (subFilter === "全部" || subFilter === "笔记"))) && (
+        {showNotes && (
           <div className="grid grid-cols-2 gap-[10px] mb-4">
             {notes.map((note) => (
               <FeedCard
@@ -83,7 +86,7 @@ export const MeContentPanel = ({
           </div>
         )}
 
-        {activeTab !== "笔记" && (subFilter === "全部" || subFilter === "店铺") && (
+        {showShops && (
           <div className="flex flex-col gap-[10px]">
             {shops.map((shop) => (
               <ShopCard

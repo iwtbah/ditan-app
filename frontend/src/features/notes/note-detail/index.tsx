@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useNavigate, useParams } from "react-router-dom";
+import { PullEndScrollArea, SheetHandle } from "@/components/ditan";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { EmptyState, ErrorState, Skeleton } from "@/components/feedback/wireframe-ui";
 import { resolveAsyncViewState } from "@/utils/resolve-async-view-state";
@@ -69,9 +70,7 @@ export const NoteDetail = () => {
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
         className="relative z-10 bg-background min-h-[100vh] -mt-6 rounded-t-[24px] shadow-[0_-4px_30px_rgba(0,0,0,0.06)] pb-safe"
       >
-        <div className="w-full flex justify-center pt-3 pb-2">
-          <div className="w-10 h-1 bg-border/80 rounded-full" />
-        </div>
+        <SheetHandle />
 
         <div className="px-5">
           <div className="flex items-center gap-3 mb-6 mt-1">
@@ -92,7 +91,14 @@ export const NoteDetail = () => {
 
   return (
     <div className="w-full h-full bg-background relative flex flex-col shadow-[-10px_0_20px_rgba(0,0,0,0.1)]">
-      <div ref={scrollRef} className="w-full h-full overflow-y-auto no-scrollbar relative">
+      <PullEndScrollArea
+        scrollRef={scrollRef}
+        enabled={viewState === "Normal"}
+        hintText="已经到底了"
+        endHintBottomClassName="bottom-[84px]"
+        wrapperClassName="w-full h-full relative overflow-hidden"
+        scrollClassName="w-full h-full overflow-y-auto no-scrollbar overscroll-y-contain relative"
+      >
         {viewState === "Loading" ? (
           renderPageSkeleton()
         ) : viewState === "Error" ? (
@@ -139,7 +145,7 @@ export const NoteDetail = () => {
             />
           </>
         ) : null}
-      </div>
+      </PullEndScrollArea>
 
       {note && store && viewState === "Normal" && (
         <NoteDetailCommentComposer

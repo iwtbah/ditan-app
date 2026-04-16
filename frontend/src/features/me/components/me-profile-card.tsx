@@ -1,4 +1,5 @@
 import React from "react";
+import { profilePanelClassName } from "@/components/ditan";
 import { MapPin, PenTool, Settings, Share } from "lucide-react";
 import type { ProfileSummary } from "@/types/user";
 
@@ -19,7 +20,7 @@ export const MeProfileCard = ({ profile }: MeProfileCardProps) => {
         </div>
       </div>
 
-        <div className="bg-card rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.04)] p-5 mb-[14px] border border-border/40 mt-6 relative z-20">
+        <div className={`${profilePanelClassName} p-5 mb-[14px] mt-6 relative z-20`}>
         <div className="flex justify-between items-start -mt-10 mb-3">
           <img
             src={profile.avatar}

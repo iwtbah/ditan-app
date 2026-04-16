@@ -1,5 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { PullEndScrollArea } from "@/components/ditan";
 import { MapPin, X } from "lucide-react";
 
 type StoreOption = {
@@ -62,7 +63,12 @@ export const PublishStoreSheet = ({
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto no-scrollbar p-2">
+            <PullEndScrollArea
+              hintText="已经到底了"
+              wrapperClassName="flex-1 relative overflow-hidden"
+              endHintBottomClassName="bottom-2"
+              scrollClassName="h-full overflow-y-auto no-scrollbar overscroll-y-contain p-2"
+            >
               {options.map((store) => (
                 <div
                   key={store.name}
@@ -98,7 +104,7 @@ export const PublishStoreSheet = ({
                 <MapPin size={18} strokeWidth={2.5} />
                 <span>+ 创建新地点</span>
               </div>
-            </div>
+            </PullEndScrollArea>
           </motion.div>
         </>
       )}

@@ -1,6 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Heart, MessageSquare, Send, Star } from "lucide-react";
+import { bottomGlassBarBaseClassName } from "@/components/ditan";
+import { Heart, Send, Star } from "lucide-react";
 import type { AsyncViewState } from "@/types/common";
 
 type NoteDetailCommentComposerProps = {
@@ -36,7 +37,7 @@ export const NoteDetailCommentComposer = ({
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="absolute bottom-0 inset-x-0 h-[64px] bg-background/80 backdrop-blur-xl border-t border-border/40 flex items-center px-5 gap-3 z-50 pb-safe"
+          className={`${bottomGlassBarBaseClassName} h-[64px] backdrop-blur-xl flex items-center px-5 gap-3 pb-safe`}
         >
           <div
             onClick={onOpen}

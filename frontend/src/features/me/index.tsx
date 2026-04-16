@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PullEndScrollArea } from "@/components/ditan";
 import { resolveAsyncViewState } from "@/utils/resolve-async-view-state";
 import { useMeProfileQuery } from "./hooks";
 import { MeContentPanel, MeProfileCard } from "./components";
@@ -19,7 +20,12 @@ export const Me = () => {
 
   return (
     <div className="flex flex-col h-full bg-background overflow-hidden relative">
-      <div className="flex-1 overflow-y-auto pb-[90px] z-10 relative px-4 no-scrollbar">
+      <PullEndScrollArea
+        enabled={viewState === "Normal"}
+        wrapperClassName="flex-1 relative overflow-hidden z-10"
+        endHintBottomClassName="bottom-[92px]"
+        scrollClassName="h-full overflow-y-auto pb-[90px] relative px-4 no-scrollbar overscroll-y-contain"
+      >
         {profileData && <MeProfileCard profile={profileData.profile} />}
         <MeContentPanel
           activeTab={activeTab}
@@ -33,7 +39,7 @@ export const Me = () => {
           onSubFilterChange={setSubFilter}
           onTabChange={setActiveTab}
         />
-      </div>
+      </PullEndScrollArea>
     </div>
   );
 };

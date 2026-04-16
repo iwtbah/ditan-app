@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, CategoryChips } from "@/components/ditan";
+import { CategoryChips, Header, SegmentedControl } from "@/components/ditan";
 
 type HomeHeaderProps = {
   activeCategory: string;
@@ -27,29 +27,16 @@ export const HomeHeader = ({
       />
 
       <div className="px-lg pt-2 pb-1 flex justify-center w-full relative z-10">
-        <div className="flex bg-muted/80 backdrop-blur-sm rounded-[12px] p-[3px] relative w-[220px] shadow-inner border border-border/40">
-          <div
-            className={`absolute top-[3px] bottom-[3px] left-[3px] w-[calc(50%-3px)] bg-card rounded-[9px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border/60 transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) ${
-              contentType === "店铺" ? "translate-x-[100%]" : "translate-x-0"
-            }`}
-          />
-          <button
-            onClick={() => onContentTypeChange("探店日记")}
-            className={`flex-1 py-[6px] text-[14px] font-bold rounded-lg relative z-10 transition-colors ${
-              contentType === "探店日记" ? "text-text-primary" : "text-text-tertiary"
-            }`}
-          >
-            探店日记
-          </button>
-          <button
-            onClick={() => onContentTypeChange("店铺")}
-            className={`flex-1 py-[6px] text-[14px] font-bold rounded-lg relative z-10 transition-colors ${
-              contentType === "店铺" ? "text-text-primary" : "text-text-tertiary"
-            }`}
-          >
-            店铺
-          </button>
-        </div>
+        <SegmentedControl
+          options={[
+            { label: "探店日记", value: "探店日记" },
+            { label: "店铺", value: "店铺" },
+          ]}
+          value={contentType}
+          onChange={onContentTypeChange}
+          className="w-[220px]"
+          buttonClassName="py-[6px] text-[14px] font-bold"
+        />
       </div>
 
       <CategoryChips

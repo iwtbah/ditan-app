@@ -2,12 +2,12 @@ import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
 
 export const HOME_NOTES: NoteCardData[] = [
-  { id: 1, title: "周末和闺蜜的宝藏下午茶店打卡，拍照绝绝子", author: "小透明", likes: 234, height: "h-48", liked: true },
-  { id: 2, title: "城市露营体验 | 不出城也能拥抱大自然", author: "户外探路者", likes: 102, height: "h-64", liked: false },
-  { id: 3, title: "这家深夜食堂，温暖了整个城市的胃口", author: "吃货老陈", likes: 890, height: "h-56", liked: true },
-  { id: 4, title: "极简纯白风咖啡馆，随便拍都出片", author: "审美控", likes: 56, height: "h-40", liked: false },
-  { id: 5, title: "隐藏在弄堂里的古着店，淘到宝了", author: "复古女孩", likes: 412, height: "h-72", liked: false },
-  { id: 6, title: "绝美日落观景台，情侣约会必去", author: "浪漫主义者", likes: 1120, height: "h-48", liked: true },
+  { id: 1, title: "周末和闺蜜的宝藏下午茶店打卡，拍照绝绝子", author: "小透明", likes: 234, height: "h-48", liked: true, image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
+  { id: 2, title: "城市露营体验 | 不出城也能拥抱大自然", author: "户外探路者", likes: 102, height: "h-64", liked: false, image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
+  { id: 3, title: "这家深夜食堂，温暖了整个城市的胃口", author: "吃货老陈", likes: 890, height: "h-56", liked: true, image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
+  { id: 4, title: "极简纯白风咖啡馆，随便拍都出片", author: "审美控", likes: 56, height: "h-40", liked: false, image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
+  { id: 5, title: "隐藏在弄堂里的古着店，淘到宝了", author: "复古女孩", likes: 412, height: "h-72", liked: false, image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
+  { id: 6, title: "绝美日落观景台，情侣约会必去", author: "浪漫主义者", likes: 1120, height: "h-48", liked: true, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" },
 ];
 
 export const HOME_SHOPS: ShopCardData[] = [

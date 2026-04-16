@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, type MotionValue } from "motion/react";
+import { overlayActionRowClassName, overlayIconButtonClassName } from "@/components/ditan";
 import { ChevronLeft, MoreHorizontal } from "lucide-react";
 
 type NoteDetailOverlayHeaderProps = {
@@ -29,14 +30,14 @@ export const NoteDetailOverlayHeader = ({
         </div>
       </motion.div>
 
-      <div className="fixed top-[max(env(safe-area-inset-top,0px),16px)] inset-x-0 px-4 py-2 flex justify-between z-[60] pointer-events-none mt-2">
+      <div className={overlayActionRowClassName}>
         <button
           onClick={onBack}
-          className="pointer-events-auto w-9 h-9 rounded-full bg-black/20 backdrop-blur-xl flex items-center justify-center text-white border border-white/20 active:scale-95 transition-transform"
+          className={overlayIconButtonClassName}
         >
           <ChevronLeft size={22} strokeWidth={2.5} className="-ml-0.5" />
         </button>
-        <button className="pointer-events-auto w-9 h-9 rounded-full bg-black/20 backdrop-blur-xl flex items-center justify-center text-white border border-white/20 active:scale-95 transition-transform">
+        <button className={overlayIconButtonClassName}>
           <MoreHorizontal size={20} strokeWidth={2.5} />
         </button>
       </div>

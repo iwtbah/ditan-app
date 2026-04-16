@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
+import { SectionHeader } from "@/components/ditan";
 import { ChevronRight, Star, ThumbsUp, Ticket } from "lucide-react";
 import type { MasonryNoteData } from "@/types/note";
 import type { StoreDish, StoreReview } from "@/types/shop";
@@ -53,12 +54,14 @@ export const StoreDetailSections = ({
       </div>
 
       <div className="mt-8">
-        <div className="px-5 flex items-center justify-between mb-4">
-          <h3 className="text-[17px] font-bold text-text-primary tracking-tight">精选探店</h3>
-          <span className="text-[12px] font-bold text-text-tertiary flex items-center gap-0.5 cursor-pointer active:opacity-70">
-            全部 <ChevronRight size={14} />
-          </span>
-        </div>
+        <SectionHeader
+          title="精选探店"
+          trailing={
+            <span className="text-[12px] font-bold text-text-tertiary flex items-center gap-0.5 cursor-pointer active:opacity-70">
+              全部 <ChevronRight size={14} />
+            </span>
+          }
+        />
 
         <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-5 gap-3 pb-2">
           {selectedNotes.map((note) => (
@@ -85,9 +88,7 @@ export const StoreDetailSections = ({
       </div>
 
       <div className="mt-8">
-        <div className="px-5 mb-4">
-          <h3 className="text-[17px] font-bold text-text-primary tracking-tight">推荐菜品</h3>
-        </div>
+        <SectionHeader title="推荐菜品" className="px-5 mb-4" />
         <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-5 gap-3 pb-2">
           {dishes.map((dish) => (
             <motion.div
@@ -108,12 +109,15 @@ export const StoreDetailSections = ({
       </div>
 
       <div className="mt-8 px-5">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-[17px] font-bold text-text-primary tracking-tight">热门评价</h3>
-          <span className="text-[12px] font-bold text-text-tertiary flex items-center gap-0.5 cursor-pointer active:opacity-70">
-            共 342 条 <ChevronRight size={14} />
-          </span>
-        </div>
+        <SectionHeader
+          title="热门评价"
+          className="mb-4 flex items-center justify-between"
+          trailing={
+            <span className="text-[12px] font-bold text-text-tertiary flex items-center gap-0.5 cursor-pointer active:opacity-70">
+              共 342 条 <ChevronRight size={14} />
+            </span>
+          }
+        />
         <div className="flex flex-col gap-3">
           {reviews.map((review) => (
             <motion.div key={review.id} whileTap={{ scale: 0.98 }} className="bg-muted/40 rounded-[14px] p-3.5 flex gap-3 border border-border/40 cursor-pointer">
@@ -139,7 +143,7 @@ export const StoreDetailSections = ({
       </div>
 
       <div className="px-5 mt-10 pb-8 bg-background">
-        <h3 className="text-[17px] font-bold text-text-primary tracking-tight mb-5">更多探店内容</h3>
+        <SectionHeader title="更多探店内容" className="mb-5" />
         <div className="flex gap-4">
           <div className="flex-1 flex flex-col">
             {allNotes.filter((_, index) => index % 2 === 0).map((note) => (

@@ -1,7 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { CommentItem, SectionHeader, SheetHandle } from "@/components/ditan";
 import { ChevronRight, Heart, MessageSquare, MoreHorizontal, Star } from "lucide-react";
-import { CommentItem } from "@/components/ditan";
 import type { NoteComment, NoteDetailData } from "@/types/note";
 import type { LinkedStoreData } from "@/types/shop";
 
@@ -39,9 +39,7 @@ export const NoteDetailContent = ({
       transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       className="relative z-10 bg-background min-h-[100vh] -mt-6 rounded-t-[24px] shadow-[0_-4px_30px_rgba(0,0,0,0.06)] pb-safe"
     >
-      <div className="w-full flex justify-center pt-3 pb-2">
-        <div className="w-10 h-1 bg-border/80 rounded-full" />
-      </div>
+      <SheetHandle />
 
       <div className="px-5">
         <div className="flex items-center justify-between mb-5 mt-1">
@@ -155,7 +153,11 @@ export const NoteDetailContent = ({
         </div>
 
         <div>
-          <h3 className="font-bold text-[16px] text-text-primary mb-5 tracking-tight">共 {comments.length + 126} 条评论</h3>
+          <SectionHeader
+            title={`共 ${comments.length + 126} 条评论`}
+            className="mb-5"
+            titleClassName="font-bold text-[16px] text-text-primary tracking-tight"
+          />
           <div className="space-y-5 pb-24">
             <AnimatePresence>
               {comments.map((comment) => (

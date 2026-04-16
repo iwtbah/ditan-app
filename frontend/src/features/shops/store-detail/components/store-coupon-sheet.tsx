@@ -1,5 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { PullEndScrollArea } from "@/components/ditan";
 import { Ticket, X } from "lucide-react";
 import type { StoreCoupon } from "@/types/shop";
 
@@ -29,7 +30,12 @@ export const StoreCouponSheet = ({ coupons, isOpen, onClose }: StoreCouponSheetP
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-4 pb-6">
+            <PullEndScrollArea
+              hintText="已经到底了"
+              wrapperClassName="flex-1 relative overflow-hidden"
+              endHintBottomClassName="bottom-2"
+              scrollClassName="h-full overflow-y-auto no-scrollbar overscroll-y-contain flex flex-col gap-4 pb-6"
+            >
               {coupons.map((coupon) => (
                 <div key={coupon.id} className="bg-card/90 backdrop-blur-md border border-border/60 rounded-[20px] p-4 flex flex-col gap-3 shadow-[0_4px_16px_rgba(0,0,0,0.03)] relative overflow-hidden">
                   <div className="absolute top-1/2 -left-2 w-4 h-4 bg-background/50 rounded-full -translate-y-1/2 border-r border-border/60" />
@@ -62,7 +68,7 @@ export const StoreCouponSheet = ({ coupons, isOpen, onClose }: StoreCouponSheetP
                   </div>
                 </div>
               ))}
-            </div>
+            </PullEndScrollArea>
           </motion.div>
         </>
       )}

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useNavigate, useParams } from "react-router-dom";
+import { PullEndScrollArea, SheetHandle } from "@/components/ditan";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { EmptyState, ErrorState, Skeleton } from "@/components/feedback/wireframe-ui";
 import { resolveAsyncViewState } from "@/utils/resolve-async-view-state";
@@ -51,9 +52,7 @@ export const StoreDetail = () => {
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
         className="relative z-10 bg-background min-h-[100vh] -mt-6 rounded-t-[24px] shadow-[0_-4px_30px_rgba(0,0,0,0.06)] pb-safe"
       >
-        <div className="w-full flex justify-center pt-3 pb-2">
-          <div className="w-10 h-1 bg-border/80 rounded-full" />
-        </div>
+        <SheetHandle />
 
         <div className="mx-4 -mt-20 bg-card rounded-[20px] p-5 shadow-sm">
           <Skeleton className="w-3/4 h-7 mb-4 rounded-md" />
@@ -69,7 +68,14 @@ export const StoreDetail = () => {
 
   return (
     <div className="w-full h-full bg-background relative flex flex-col">
-      <div ref={scrollRef} className="w-full h-full overflow-y-auto no-scrollbar relative pb-[90px]">
+      <PullEndScrollArea
+        scrollRef={scrollRef}
+        enabled={viewState === "Normal"}
+        hintText="已经到底了"
+        endHintBottomClassName="bottom-[84px]"
+        wrapperClassName="w-full h-full relative overflow-hidden"
+        scrollClassName="w-full h-full overflow-y-auto no-scrollbar overscroll-y-contain relative pb-[90px]"
+      >
         {viewState === "Loading" ? (
           renderPageSkeleton()
         ) : viewState === "Error" ? (
@@ -107,9 +113,7 @@ export const StoreDetail = () => {
                 transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
                 className="relative z-10 bg-background min-h-[100vh] -mt-6 rounded-t-[24px] shadow-[0_-4px_30px_rgba(0,0,0,0.06)] pb-safe"
               >
-                <div className="w-full flex justify-center pt-3 pb-2">
-                  <div className="w-10 h-1 bg-border/80 rounded-full" />
-                </div>
+                <SheetHandle />
 
                 <StoreDetailSummaryCard store={storeDetailData.store} />
                 <StoreDetailSections
@@ -124,7 +128,7 @@ export const StoreDetail = () => {
             </div>
           </>
         ) : null}
-      </div>
+      </PullEndScrollArea>
 
       {storeDetailData && viewState === "Normal" && (
         <StoreDetailActionBar

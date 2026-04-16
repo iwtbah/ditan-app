@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, Search as SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
-import { Skeleton } from "@/components/feedback/wireframe-ui";
+import { FeedCard, ListContainer, MasonryColumns, NoteFeedSkeletonCard, PullEndScrollArea, ShopCard, ShopListSkeleton } from "@/components/ditan";
 import { resolveAsyncViewState } from "@/utils/resolve-async-view-state";
 import { useSearchNotesQuery, useSearchShopsQuery } from "./hooks";
 
@@ -32,52 +31,20 @@ export const Search = () => {
 
   const renderSkeleton = () => {
     if (activeTab === "店铺") {
-      return (
-        <div className="flex flex-col gap-sm mt-md">
-          {[1, 2, 3].map((item) => (
-            <div
-              key={item}
-              className="bg-card rounded-xl p-md flex items-center justify-between border border-border"
-            >
-              <div className="flex items-center gap-md w-full">
-                <Skeleton className="w-12 h-12 rounded-lg" />
-                <div className="flex flex-col gap-xs flex-1">
-                  <Skeleton className="h-4 w-1/2" />
-                  <Skeleton className="h-3 w-1/3" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
+      return <div className="mt-md"><ShopListSkeleton /></div>;
     }
 
     return (
-      <div className="flex gap-sm mt-md">
-        <div className="flex-1 flex flex-col gap-sm">
-          {[1, 2].map((item) => (
-            <div
-              key={item}
-              className="bg-card rounded-lg overflow-hidden flex flex-col shadow-card border border-border p-md"
-            >
-              <Skeleton className="w-full h-48 mb-sm rounded-md bg-muted" />
-              <Skeleton className="h-4 w-[90%] mb-[8px]" />
-              <Skeleton className="h-4 w-[60%] mb-[16px]" />
-            </div>
-          ))}
-        </div>
-        <div className="flex-1 flex flex-col gap-sm">
-          {[3, 4].map((item) => (
-            <div
-              key={item}
-              className="bg-card rounded-lg overflow-hidden flex flex-col shadow-card border border-border p-md"
-            >
-              <Skeleton className="w-full h-40 mb-sm rounded-md bg-muted" />
-              <Skeleton className="h-4 w-[90%] mb-[8px]" />
-              <Skeleton className="h-4 w-[60%] mb-[16px]" />
-            </div>
-          ))}
-        </div>
+      <div className="mt-md">
+        <MasonryColumns
+          items={[
+            { id: "search-skeleton-1", height: "h-48" },
+            { id: "search-skeleton-2", height: "h-40" },
+            { id: "search-skeleton-3", height: "h-48" },
+            { id: "search-skeleton-4", height: "h-40" },
+          ]}
+          renderItem={(item) => <NoteFeedSkeletonCard key={item.id} height={item.height} />}
+        />
       </div>
     );
   };
@@ -148,7 +115,12 @@ export const Search = () => {
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto bg-muted p-sm relative">
+      <PullEndScrollArea
+        enabled={hasSearched && viewState === "Normal"}
+        wrapperClassName="flex-1 relative overflow-hidden bg-muted"
+        endHintBottomClassName="bottom-5"
+        scrollClassName="h-full overflow-y-auto no-scrollbar overscroll-y-contain p-sm relative"
+      >
         {!hasSearched ? (
           <div className="mt-lg">
             <h3 className="text-caption font-bold text-text-secondary px-sm mb-md">历史搜索</h3>
@@ -179,34 +151,20 @@ export const Search = () => {
           >
             <div className="mt-md">
               {activeTab === "日记" ? (
-                <div className="flex gap-sm">
-                  <div className="flex-1 flex flex-col gap-sm">
-                    {notes.filter((_, index) => index % 2 === 0).map((note) => (
-                      <FeedCard
-                        key={note.id}
-                        id={note.id}
-                        title={note.title}
-                        author={note.author}
-                        likes={note.likes}
-                        liked={note.liked}
-                        imageClassName={note.height}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex-1 flex flex-col gap-sm">
-                    {notes.filter((_, index) => index % 2 !== 0).map((note) => (
-                      <FeedCard
-                        key={note.id}
-                        id={note.id}
-                        title={note.title}
-                        author={note.author}
-                        likes={note.likes}
-                        liked={note.liked}
-                        imageClassName={note.height}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <MasonryColumns
+                  items={notes}
+                  renderItem={(note) => (
+                    <FeedCard
+                      key={note.id}
+                      id={note.id}
+                      title={note.title}
+                      author={note.author}
+                      likes={note.likes}
+                      liked={note.liked}
+                      imageClassName={note.height}
+                    />
+                  )}
+                />
               ) : (
                 <div className="flex flex-col gap-sm">
                   {shops.map((shop) => (
@@ -227,7 +185,7 @@ export const Search = () => {
             </div>
           </ListContainer>
         )}
-      </div>
+      </PullEndScrollArea>
     </div>
   );
 };

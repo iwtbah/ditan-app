@@ -1,7 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
-import { Skeleton } from "@/components/feedback/wireframe-ui";
+import { FeedCard, ListContainer, MasonryColumns, PullEndScrollArea, ShopCard, ShopListSkeleton } from "@/components/ditan";
 import type { AsyncViewState } from "@/types/common";
 import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
@@ -18,36 +17,21 @@ type HomeFeedProps = {
 
 const renderSkeleton = (contentType: string) => {
   if (contentType === "店铺") {
-    return (
-      <div className="flex flex-col gap-sm">
-        {[1, 2, 3].map((item) => (
-          <div key={item} className="bg-card rounded-xl p-md flex items-center justify-between border border-border">
-            <div className="flex items-center gap-md w-full">
-              <Skeleton className="w-12 h-12 rounded-lg" />
-              <div className="flex flex-col gap-xs flex-1">
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-3 w-1/3" />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <ShopListSkeleton />;
   }
 
   return (
-    <div className="flex gap-sm">
-      <div className="flex-1 flex flex-col gap-sm">
-        {[1, 2, 3].map((item) => (
-          <HomeSkeletonNote key={`left-${item}`} height={item % 2 === 0 ? "h-64" : "h-48"} />
-        ))}
-      </div>
-      <div className="flex-1 flex flex-col gap-sm">
-        {[4, 5, 6].map((item) => (
-          <HomeSkeletonNote key={`right-${item}`} height={item % 2 !== 0 ? "h-56" : "h-40"} />
-        ))}
-      </div>
-    </div>
+    <MasonryColumns
+      items={[
+        { id: "skeleton-1", height: "h-48" },
+        { id: "skeleton-2", height: "h-56" },
+        { id: "skeleton-3", height: "h-64" },
+        { id: "skeleton-4", height: "h-40" },
+        { id: "skeleton-5", height: "h-48" },
+        { id: "skeleton-6", height: "h-56" },
+      ]}
+      renderItem={(item) => <HomeSkeletonNote key={item.id} height={item.height} />}
+    />
   );
 };
 
@@ -60,7 +44,12 @@ export const HomeFeed = ({
   state,
 }: HomeFeedProps) => {
   return (
-    <div className="flex-1 overflow-y-auto bg-muted p-sm relative">
+    <PullEndScrollArea
+      enabled={state === "Normal"}
+      wrapperClassName="flex-1 relative overflow-hidden bg-muted"
+      endHintBottomClassName="bottom-[92px]"
+      scrollClassName="h-full overflow-y-auto no-scrollbar overscroll-y-contain px-sm pt-sm pb-[90px] relative"
+    >
       <ListContainer
         state={state}
         loadingComponent={renderSkeleton(contentType)}
@@ -77,46 +66,27 @@ export const HomeFeed = ({
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
             {contentType === "探店日记" ? (
-                <div className="flex gap-sm">
-                  <div className="flex-1 flex flex-col gap-sm">
-                  {notes.filter((_, index) => index % 2 === 0).map((note, index) => (
-                    <motion.div
-                      key={note.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                    >
-                      <FeedCard
-                        id={note.id}
-                        title={note.title}
-                        author={note.author}
-                        likes={note.likes}
-                        liked={note.liked}
-                        imageClassName={note.height}
-                      />
-                    </motion.div>
-                  ))}
-                  </div>
-                  <div className="flex-1 flex flex-col gap-sm">
-                  {notes.filter((_, index) => index % 2 !== 0).map((note, index) => (
-                    <motion.div
-                      key={note.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 + 0.05, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                    >
-                      <FeedCard
-                        id={note.id}
-                        title={note.title}
-                        author={note.author}
-                        likes={note.likes}
-                        liked={note.liked}
-                        imageClassName={note.height}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+              <MasonryColumns
+                items={notes}
+                renderItem={(note, index, columnIndex) => (
+                  <motion.div
+                    key={note.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 + columnIndex * 0.05, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+                  >
+                    <FeedCard
+                      id={note.id}
+                      title={note.title}
+                      author={note.author}
+                      likes={note.likes}
+                      liked={note.liked}
+                      image={note.image}
+                      imageClassName={note.height}
+                    />
+                  </motion.div>
+                )}
+              />
             ) : (
               <div className="flex flex-col gap-sm">
                 {shops.map((shop, index) => (
@@ -150,6 +120,6 @@ export const HomeFeed = ({
           </motion.div>
         </AnimatePresence>
       </ListContainer>
-    </div>
+    </PullEndScrollArea>
   );
 };
