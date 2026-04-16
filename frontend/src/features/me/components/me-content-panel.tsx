@@ -2,12 +2,15 @@ import React from "react";
 import { motion } from "motion/react";
 import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
 import type { AsyncViewState } from "@/types/common";
-import { PROFILE_NOTES, PROFILE_SHOPS } from "../mocks";
+import type { NoteCardData } from "@/types/note";
+import type { ShopCardData } from "@/types/shop";
 
 type MeContentPanelProps = {
   activeTab: string;
   appState: AsyncViewState;
+  notes: NoteCardData[];
   subFilter: string;
+  shops: ShopCardData[];
   onSubFilterChange: (value: string) => void;
   onTabChange: (value: string) => void;
 };
@@ -15,7 +18,9 @@ type MeContentPanelProps = {
 export const MeContentPanel = ({
   activeTab,
   appState,
+  notes,
   subFilter,
+  shops,
   onSubFilterChange,
   onTabChange,
 }: MeContentPanelProps) => {
@@ -60,7 +65,7 @@ export const MeContentPanel = ({
       <ListContainer state={appState} className="flex-1 bg-muted/10 p-3">
         {(activeTab === "笔记" || (activeTab !== "笔记" && (subFilter === "全部" || subFilter === "笔记"))) && (
           <div className="grid grid-cols-2 gap-[10px] mb-4">
-            {PROFILE_NOTES.map((note) => (
+            {notes.map((note) => (
               <FeedCard
                 key={note.id}
                 id={note.id}
@@ -78,7 +83,7 @@ export const MeContentPanel = ({
 
         {activeTab !== "笔记" && (subFilter === "全部" || subFilter === "店铺") && (
           <div className="flex flex-col gap-[10px]">
-            {PROFILE_SHOPS.map((shop) => (
+            {shops.map((shop) => (
               <ShopCard
                 key={shop.id}
                 id={shop.id}

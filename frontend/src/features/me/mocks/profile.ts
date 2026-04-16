@@ -1,5 +1,18 @@
 import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
+import type { ProfileSummary } from "@/types/user";
+
+export const PROFILE_SUMMARY: ProfileSummary = {
+  avatar:
+    "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+  badge: "探店达人",
+  bio: "爱好摄影，喜欢打卡各种宝藏小店。\n关注我，带你发现城市里的美好~",
+  city: "北京",
+  followerCount: "3.4k",
+  followingCount: "128",
+  likesAndCollections: "12.5k",
+  name: "小明的小名叫明明",
+};
 
 export const PROFILE_NOTES: NoteCardData[] = [
   { id: 1, title: "绝美日落观景台", author: "明明", authorAvatar: "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", likes: 121, height: "h-[180px]", image: "https://images.unsplash.com/photo-1617965215075-b1f768dc8a61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW5zZXQlMjB2aWV3fGVufDF8fHx8MTc3NjA4OTY1MHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },

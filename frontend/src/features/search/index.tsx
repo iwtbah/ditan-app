@@ -3,15 +3,21 @@ import { ChevronLeft, Search as SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
 import { Skeleton } from "@/components/feedback/wireframe-ui";
-import { useViewStateContext } from "@/contexts/view-state-context";
-import { SEARCH_NOTES, SEARCH_SHOPS } from "./mocks";
+import { usePreviewStateContext } from "@/contexts/preview-state-context";
+import { useSearchNotesQuery, useSearchShopsQuery } from "./hooks";
 
 export const Search = () => {
   const navigate = useNavigate();
-  const { appState } = useViewStateContext();
+  const { appState } = usePreviewStateContext();
   const [activeTab, setActiveTab] = useState("日记");
   const [query, setQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const keyword = query.trim();
+  const queryEnabled = hasSearched && Boolean(keyword);
+  const notesQuery = useSearchNotesQuery({ keyword }, queryEnabled);
+  const shopsQuery = useSearchShopsQuery({ keyword }, queryEnabled);
+  const notes = notesQuery.data?.items ?? [];
+  const shops = shopsQuery.data?.items ?? [];
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
@@ -168,7 +174,7 @@ export const Search = () => {
               {activeTab === "日记" ? (
                 <div className="flex gap-sm">
                   <div className="flex-1 flex flex-col gap-sm">
-                    {SEARCH_NOTES.filter((_, index) => index % 2 === 0).map((note) => (
+                    {notes.filter((_, index) => index % 2 === 0).map((note) => (
                       <FeedCard
                         key={note.id}
                         id={note.id}
@@ -181,7 +187,7 @@ export const Search = () => {
                     ))}
                   </div>
                   <div className="flex-1 flex flex-col gap-sm">
-                    {SEARCH_NOTES.filter((_, index) => index % 2 !== 0).map((note) => (
+                    {notes.filter((_, index) => index % 2 !== 0).map((note) => (
                       <FeedCard
                         key={note.id}
                         id={note.id}
@@ -196,7 +202,7 @@ export const Search = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-sm">
-                  {SEARCH_SHOPS.map((shop) => (
+                  {shops.map((shop) => (
                     <ShopCard
                       key={shop.id}
                       id={shop.id}

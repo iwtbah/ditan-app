@@ -3,13 +3,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
 import { Skeleton } from "@/components/feedback/wireframe-ui";
 import type { AsyncViewState } from "@/types/common";
-import { HOME_NOTES, HOME_SHOPS } from "../mocks";
+import type { NoteCardData } from "@/types/note";
+import type { ShopCardData } from "@/types/shop";
 import { HomeSkeletonNote } from "./home-skeleton-note";
 
 type HomeFeedProps = {
   activeCategory: string;
   appState: AsyncViewState;
   contentType: string;
+  notes: NoteCardData[];
+  shops: ShopCardData[];
 };
 
 const renderSkeleton = (contentType: string) => {
@@ -47,7 +50,7 @@ const renderSkeleton = (contentType: string) => {
   );
 };
 
-export const HomeFeed = ({ activeCategory, appState, contentType }: HomeFeedProps) => {
+export const HomeFeed = ({ activeCategory, appState, contentType, notes, shops }: HomeFeedProps) => {
   return (
     <div className="flex-1 overflow-y-auto bg-muted p-sm relative">
       <ListContainer
@@ -65,9 +68,9 @@ export const HomeFeed = ({ activeCategory, appState, contentType }: HomeFeedProp
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
             {contentType === "探店日记" ? (
-              <div className="flex gap-sm">
-                <div className="flex-1 flex flex-col gap-sm">
-                  {HOME_NOTES.filter((_, index) => index % 2 === 0).map((note, index) => (
+                <div className="flex gap-sm">
+                  <div className="flex-1 flex flex-col gap-sm">
+                  {notes.filter((_, index) => index % 2 === 0).map((note, index) => (
                     <motion.div
                       key={note.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -84,9 +87,9 @@ export const HomeFeed = ({ activeCategory, appState, contentType }: HomeFeedProp
                       />
                     </motion.div>
                   ))}
-                </div>
-                <div className="flex-1 flex flex-col gap-sm">
-                  {HOME_NOTES.filter((_, index) => index % 2 !== 0).map((note, index) => (
+                  </div>
+                  <div className="flex-1 flex flex-col gap-sm">
+                  {notes.filter((_, index) => index % 2 !== 0).map((note, index) => (
                     <motion.div
                       key={note.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -107,7 +110,7 @@ export const HomeFeed = ({ activeCategory, appState, contentType }: HomeFeedProp
               </div>
             ) : (
               <div className="flex flex-col gap-sm">
-                {HOME_SHOPS.map((shop, index) => (
+                {shops.map((shop, index) => (
                   <motion.div
                     key={shop.id}
                     className="flex flex-col gap-2"

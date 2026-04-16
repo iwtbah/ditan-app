@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { PublishStoreOption } from "@/types/shop";
 import { PUBLISH_INITIAL_IMAGES, PUBLISH_STORE_OPTIONS } from "../mocks";
+import { usePublishNoteMutation } from "./hooks";
 import { PublishEditor, PublishHeader, PublishStoreSheet } from "./components";
 
 export const Publish = () => {
   const navigate = useNavigate();
+  const publishNoteMutation = usePublishNoteMutation();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState(PUBLISH_INITIAL_IMAGES);
@@ -38,7 +40,24 @@ export const Publish = () => {
   const handlePublish = () => {
     if (!canPublish) return;
 
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+    const publishRequest = new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const result = await publishNoteMutation.mutateAsync({
+            content,
+            images,
+            recommended: isRecommended,
+            store: selectedStore,
+            title,
+          });
+          resolve(result);
+        } catch (error) {
+          reject(error);
+        }
+      }, 1500);
+    });
+
+    toast.promise(publishRequest, {
       loading: "正在发布...",
       success: () => {
         setTimeout(() => navigate(-1), 500);

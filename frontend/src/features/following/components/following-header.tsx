@@ -1,8 +1,9 @@
 import React from "react";
+import type { FollowingFeedType } from "@/types/note";
 
 type FollowingHeaderProps = {
-  filter: string;
-  onFilterChange: (value: string) => void;
+  filter: FollowingFeedType;
+  onFilterChange: (value: FollowingFeedType) => void;
 };
 
 export const FollowingHeader = ({ filter, onFilterChange }: FollowingHeaderProps) => {
@@ -21,7 +22,7 @@ export const FollowingHeader = ({ filter, onFilterChange }: FollowingHeaderProps
               left: "3px",
             }}
           />
-          {["全部", "笔记", "店铺"].map((tab) => (
+          {(["全部", "笔记", "店铺"] as FollowingFeedType[]).map((tab) => (
             <button
               key={tab}
               onClick={() => onFilterChange(tab)}

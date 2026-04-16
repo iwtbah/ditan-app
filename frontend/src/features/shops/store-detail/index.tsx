@@ -1,19 +1,12 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { ListContainer } from "@/components/ditan";
 import { Skeleton } from "@/components/feedback/wireframe-ui";
-import { useViewStateContext } from "@/contexts/view-state-context";
+import { usePreviewStateContext } from "@/contexts/preview-state-context";
 import type { AsyncViewState } from "@/types/common";
-import {
-  STORE_DETAIL_ALL_NOTES,
-  STORE_DETAIL_COUPONS,
-  STORE_DETAIL_DISHES,
-  STORE_DETAIL_REVIEWS,
-  STORE_DETAIL_SELECTED_NOTES,
-  STORE_DETAIL_STORE,
-} from "../mocks";
+import { useStoreDetailQuery } from "./hooks";
 import {
   StoreCouponSheet,
   StoreDetailActionBar,
@@ -23,10 +16,13 @@ import {
 
 export const StoreDetail = () => {
   const navigate = useNavigate();
-  const { appState } = useViewStateContext() as { appState: AsyncViewState };
+  const { shopId = "1" } = useParams();
+  const { appState } = usePreviewStateContext() as { appState: AsyncViewState };
+  const storeDetailQuery = useStoreDetailQuery(shopId);
   const [isCollected, setIsCollected] = useState(false);
   const [isCouponOpen, setIsCouponOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const storeDetailData = storeDetailQuery.data;
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({ container: scrollRef });
@@ -78,7 +74,7 @@ export const StoreDetail = () => {
               imageOpacity={imageOpacity}
               imageScale={imageScale}
               imageY={imageY}
-              store={STORE_DETAIL_STORE}
+              store={storeDetailData.store}
               onBack={() => navigate(-1)}
               onImageScroll={handleImageScroll}
             />
@@ -86,10 +82,10 @@ export const StoreDetail = () => {
             <div className="absolute inset-x-0 bottom-0 -top-4 bg-background rounded-t-[32px] -z-10 shadow-[0_-4px_24px_rgba(0,0,0,0.02)]" />
 
             <StoreDetailSections
-              allNotes={STORE_DETAIL_ALL_NOTES}
-              dishes={STORE_DETAIL_DISHES}
-              reviews={STORE_DETAIL_REVIEWS}
-              selectedNotes={STORE_DETAIL_SELECTED_NOTES}
+              allNotes={storeDetailData.allNotes.items}
+              dishes={storeDetailData.dishes}
+              reviews={storeDetailData.reviews}
+              selectedNotes={storeDetailData.selectedNotes}
               onOpenCouponSheet={() => setIsCouponOpen(true)}
               onOpenNote={(noteId) => navigate(ROUTE_PATHS.noteDetail(String(noteId)))}
             />
@@ -99,7 +95,7 @@ export const StoreDetail = () => {
         <StoreDetailActionBar isCollected={isCollected} onToggleCollected={() => setIsCollected((current) => !current)} />
       </ListContainer>
 
-      <StoreCouponSheet coupons={STORE_DETAIL_COUPONS} isOpen={isCouponOpen} onClose={() => setIsCouponOpen(false)} />
+      <StoreCouponSheet coupons={storeDetailData.coupons} isOpen={isCouponOpen} onClose={() => setIsCouponOpen(false)} />
     </div>
   );
 };

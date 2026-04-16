@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ROUTE_PATHS } from '@/constants/routes';
+import type { PageRouteMeta } from '@/types/page';
+
+export const pageMeta: PageRouteMeta = {
+  frameName: '页面不存在',
+  showTabBar: false,
+};
 
 export function NotFoundPage() {
   return (

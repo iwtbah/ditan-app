@@ -1,17 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform } from "motion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
 import { ListContainer } from "@/components/ditan";
 import { Skeleton } from "@/components/feedback/wireframe-ui";
-import { useViewStateContext } from "@/contexts/view-state-context";
+import { usePreviewStateContext } from "@/contexts/preview-state-context";
 import type { AsyncViewState } from "@/types/common";
 import type { NoteComment } from "@/types/note";
-import {
-  NOTE_DETAIL_INITIAL_COMMENTS,
-  NOTE_DETAIL_MOCK_NOTE,
-  NOTE_DETAIL_MOCK_STORE,
-} from "../mocks";
+import { useNoteDetailQuery } from "./hooks";
 import {
   NoteDetailCommentComposer,
   NoteDetailContent,
@@ -21,14 +17,22 @@ import {
 
 export const NoteDetail = () => {
   const navigate = useNavigate();
-  const { appState } = useViewStateContext() as { appState: AsyncViewState };
+  const { noteId = "1" } = useParams();
+  const { appState } = usePreviewStateContext() as { appState: AsyncViewState };
+  const noteDetailQuery = useNoteDetailQuery(noteId);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [followState, setFollowState] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isCollected, setIsCollected] = useState(false);
   const [commenting, setCommenting] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState<NoteComment[]>(NOTE_DETAIL_INITIAL_COMMENTS);
+  const [comments, setComments] = useState<NoteComment[]>(noteDetailQuery.data.comments.items);
+  const note = noteDetailQuery.data.note;
+  const store = noteDetailQuery.data.store;
+
+  useEffect(() => {
+    setComments(noteDetailQuery.data.comments.items);
+  }, [noteDetailQuery.data.comments.items]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({ container: scrollRef });
@@ -79,8 +83,8 @@ export const NoteDetail = () => {
       >
         <div ref={scrollRef} className="w-full h-full overflow-y-auto no-scrollbar relative">
           <NoteDetailOverlayHeader
-            authorAvatar={NOTE_DETAIL_MOCK_NOTE.author.avatar}
-            authorName={NOTE_DETAIL_MOCK_NOTE.author.name}
+            authorAvatar={note.author.avatar}
+            authorName={note.author.name}
             headerOpacity={headerOpacity}
             headerY={headerY}
             onBack={() => navigate(-1)}
@@ -89,7 +93,7 @@ export const NoteDetail = () => {
             currentImageIndex={currentImageIndex}
             imageOpacity={imageOpacity}
             imageScale={imageScale}
-            images={NOTE_DETAIL_MOCK_NOTE.images}
+            images={note.images}
             onImageScroll={handleImageScroll}
           />
           <NoteDetailContent
@@ -97,9 +101,9 @@ export const NoteDetail = () => {
             followState={followState}
             isCollected={isCollected}
             isLiked={isLiked}
-            note={NOTE_DETAIL_MOCK_NOTE}
-            store={NOTE_DETAIL_MOCK_STORE}
-            onNavigateStore={() => navigate(ROUTE_PATHS.shopDetail(String(NOTE_DETAIL_MOCK_STORE.id)))}
+            note={note}
+            store={store}
+            onNavigateStore={() => navigate(ROUTE_PATHS.shopDetail(String(store.id)))}
             onOpenCommenting={() => setCommenting(true)}
             onToggleCollected={() => setIsCollected((current) => !current)}
             onToggleFollowState={() => setFollowState((current) => (current + 1) % 3)}
