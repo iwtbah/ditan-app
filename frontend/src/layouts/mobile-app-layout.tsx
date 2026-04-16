@@ -7,7 +7,11 @@ import { usePreviewStateContext } from "@/contexts/preview-state-context";
 import { TabBar } from "@/layouts/components/tab-bar";
 import type { PageRouteMeta } from "@/types/page";
 
-export function MobileAppLayout() {
+interface MobileAppLayoutProps {
+  showPreviewMeta?: boolean;
+}
+
+export function MobileAppLayout({ showPreviewMeta = false }: MobileAppLayoutProps) {
   const location = useLocation();
   const matches = useMatches();
   const outlet = useOutlet();
@@ -28,10 +32,12 @@ export function MobileAppLayout() {
 
   return (
     <div className="w-full max-w-[430px] h-[100dvh] md:h-full md:max-h-[850px] bg-background relative flex flex-col shadow-2xl overflow-hidden md:rounded-[3rem] md:border-[12px] border-gray-900 mx-auto transform transition-all ring-1 ring-border/40">
-      <div className="bg-yellow-300 text-yellow-900 text-[10px] font-bold py-1.5 px-3 flex justify-between items-center z-50 shadow-sm sticky top-0 font-mono tracking-tight uppercase">
-        <span>FRAME: {currentPageMeta?.frameName ?? "页面"}_{appState}</span>
-        <span className="opacity-60 bg-yellow-900/10 px-1.5 py-0.5 rounded">SUB: {subState}</span>
-      </div>
+      {showPreviewMeta && (
+        <div className="bg-yellow-300 text-yellow-900 text-[10px] font-bold py-1.5 px-3 flex justify-between items-center z-50 shadow-sm sticky top-0 font-mono tracking-tight uppercase">
+          <span>FRAME: {currentPageMeta?.frameName ?? "页面"}_{appState}</span>
+          <span className="opacity-60 bg-yellow-900/10 px-1.5 py-0.5 rounded">SUB: {subState}</span>
+        </div>
+      )}
 
       <Toaster position="top-center" richColors theme="light" />
 

@@ -3,21 +3,25 @@ import { ChevronLeft, Search as SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
 import { Skeleton } from "@/components/feedback/wireframe-ui";
-import { usePreviewStateContext } from "@/contexts/preview-state-context";
+import { resolveAsyncViewState } from "@/utils/resolve-async-view-state";
 import { useSearchNotesQuery, useSearchShopsQuery } from "./hooks";
 
 export const Search = () => {
   const navigate = useNavigate();
-  const { appState } = usePreviewStateContext();
   const [activeTab, setActiveTab] = useState("日记");
   const [query, setQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const keyword = query.trim();
-  const queryEnabled = hasSearched && Boolean(keyword);
-  const notesQuery = useSearchNotesQuery({ keyword }, queryEnabled);
-  const shopsQuery = useSearchShopsQuery({ keyword }, queryEnabled);
+  const notesQuery = useSearchNotesQuery({ keyword }, hasSearched && Boolean(keyword) && activeTab === "日记");
+  const shopsQuery = useSearchShopsQuery({ keyword }, hasSearched && Boolean(keyword) && activeTab === "店铺");
   const notes = notesQuery.data?.items ?? [];
   const shops = shopsQuery.data?.items ?? [];
+  const activeQuery = activeTab === "日记" ? notesQuery : shopsQuery;
+  const viewState = resolveAsyncViewState({
+    isError: activeQuery.isError,
+    isLoading: activeQuery.isPending,
+    isEmpty: activeTab === "日记" ? notes.length === 0 : shops.length === 0,
+  });
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
@@ -165,10 +169,13 @@ export const Search = () => {
           </div>
         ) : (
           <ListContainer
-            state={appState}
+            state={viewState}
             loadingComponent={renderSkeleton()}
             emptyMessage={`未找到与 "${query}" 相关的${activeTab}`}
             errorMessage="加载失败"
+            onRetry={() => {
+              void activeQuery.refetch();
+            }}
           >
             <div className="mt-md">
               {activeTab === "日记" ? (

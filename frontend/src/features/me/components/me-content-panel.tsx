@@ -9,6 +9,7 @@ type MeContentPanelProps = {
   activeTab: string;
   appState: AsyncViewState;
   notes: NoteCardData[];
+  onRetry?: () => void;
   subFilter: string;
   shops: ShopCardData[];
   onSubFilterChange: (value: string) => void;
@@ -19,6 +20,7 @@ export const MeContentPanel = ({
   activeTab,
   appState,
   notes,
+  onRetry,
   subFilter,
   shops,
   onSubFilterChange,
@@ -62,7 +64,7 @@ export const MeContentPanel = ({
         </div>
       )}
 
-      <ListContainer state={appState} className="flex-1 bg-muted/10 p-3">
+      <ListContainer state={appState} className="flex-1 bg-muted/10 p-3" onRetry={onRetry}>
         {(activeTab === "笔记" || (activeTab !== "笔记" && (subFilter === "全部" || subFilter === "笔记"))) && (
           <div className="grid grid-cols-2 gap-[10px] mb-4">
             {notes.map((note) => (

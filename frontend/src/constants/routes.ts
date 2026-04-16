@@ -1,5 +1,6 @@
 export const ROUTE_PATHS = {
   home: '/',
+  preview: '/preview',
   components: '/components',
   following: '/following',
   ditan: '/ditan',

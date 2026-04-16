@@ -1,334 +1,268 @@
 # ditan-app frontend 协作规范
 
-## 1. 项目定位
+## 1. 项目现状
 
-本仓库是“类似大众点评的点评 / 内容社区项目”的前端工程底座，当前阶段目标是先把可持续迭代的工程结构搭稳，而不是先追求精细 UI。
+这是迪探项目的前端工程，当前不是纯初始化模板，而是“原型迁移到稳定结构”的中间态。
 
-核心原则：
+目标：
 
-- 优先保证结构清晰、边界明确、便于长期迭代
-- 页面只做路由承接，不堆积复杂业务逻辑
-- 客户端状态与服务端状态严格分层
-- 类型集中管理，避免散落在页面组件中
+- 优先保证目录边界清晰，便于持续迭代和 AI 接力
+- 页面层保持轻量，业务逻辑继续下沉到 feature
+- 服务端状态与客户端状态严格分层
 - 默认使用中文进行说明、注释、文档协作
 
-技术栈固定为：
+当前技术栈以实际代码为准：
 
-- React
-- TypeScript
-- Vite
-- React Router
-- Zustand
-- TanStack Query
-- Tailwind CSS
+- React 18
+- TypeScript 5
+- Vite 6
+- React Router 6
+- TanStack Query 5
+- Zustand 5
+- Tailwind CSS 4
 
-## 2. 总体分层
+当前还在使用的配套库：
 
-### `src/pages`
+- `motion`
+- `sonner`
+- `lucide-react`
+- `clsx`
+- `tailwind-merge`
 
-页面层只负责：
+## 2. 当前目录结构
 
-- 读取路由参数
-- 组合 feature 组件
-- 设置页面标题、路由级元信息
-- 承接布局层输出
+### `src/app`
 
-页面层不负责：
+应用入口与全局装配层：
 
-- 直接发请求
-- 承担复杂业务编排
-- 定义大量领域类型
-- 保存服务端数据
-
-如果某个页面文件开始出现大量状态、接口调用、数据转换，应立即下沉到对应 `feature`。
-
-### `src/features`
-
-业务功能主场。每个业务域按模块组织，通常包含：
-
-- `components`：该业务专属组件
-- `hooks`：该业务的 query hooks / mutation hooks
-- `utils`：该业务内部工具函数
-- `schemas` 或 `adapters`：后续如果接口适配复杂，可继续补充
-
-推荐业务域：
-
-- `auth`
-- `home`
-- `shops`
-- `notes`
-- `users`
-- `search`
-- `me`
-
-### `src/api`
-
-API 层必须按业务模块拆分，不允许把所有请求堆在一个文件。
-
-- `src/api/client.ts`：统一请求封装、鉴权头、错误处理、query params、body 序列化
-- `src/api/modules/*.ts`：按业务域拆分接口函数
-
-规则：
-
-- 页面层不得直接写 `fetch`
-- feature 内优先调用 API 模块函数
-- API 函数保持“薄”，负责请求，不承担页面展示逻辑
-
-### `src/stores`
-
-Zustand 只用于客户端本地状态。
-
-允许：
-
-- 登录态概要
-- 全局 UI 状态
-- 搜索筛选条件
-- 抽屉、弹窗、导航展开状态
-- 仅前端存在的偏好设置
-
-禁止：
-
-- 店铺详情数据
-- 笔记详情数据
-- 用户主页远程数据
-- 任何应由 Query 缓存、失效和刷新的接口结果
-
-### `src/types`
-
-共享类型统一放这里，避免散落在页面或组件文件中。
-
-推荐拆分：
-
-- `api.ts`：接口包裹类型、错误类型
-- `common.ts`：分页、通用响应结构
-- `shop.ts`
-- `note.ts`
-- `user.ts`
-- `search.ts`
-- `auth.ts`
-
-### `src/components`
-
-跨业务复用的通用组件，只放可复用的展示层积木，不放强业务耦合逻辑。
-
-### `src/hooks`
-
-跨业务复用 hooks，例如：
-
-- 页面标题
-- 通用事件监听
-- 通用滚动状态
-
-如果 hook 只服务于单一业务域，应优先放到 `src/features/<domain>/hooks`。
-
-### `src/constants`
-
-统一维护：
-
-- 路由常量
-- Query Keys
-- 全局常量枚举
-
-### `src/utils`
-
-纯函数工具层，不依赖 React 视图语义。
+- `router.tsx`：路由定义唯一入口
+- `providers.tsx`：全局 Provider 聚合
+- `query-client.ts`：TanStack Query 默认配置
 
 ### `src/layouts`
 
-布局层只承接路由壳，不放重业务逻辑。
+当前有两层布局：
 
-## 3. 路由约定
+- `workspace-layout.tsx`：桌面预览工作台壳
+- `mobile-app-layout.tsx`：移动端应用壳、页面切换动画、Tab Bar、Toaster
 
-推荐分层：
+### `src/pages`
 
-- 应用主壳路由
-- 独立认证路由
-- 404 / 错误路由
+页面层只做路由承接、页面元信息和 feature 组合。
 
-当前推荐路径：
+当前已有页面：
 
-- `/`
-- `/search`
-- `/shops/:shopId`
-- `/notes/:noteId`
-- `/users/:userId`
-- `/me`
-- `/auth/login`
+- `home`
+- `following`
+- `ditan`
+- `publish`
+- `me`
+- `search`
+- `notes/note-detail`
+- `shops/store-detail`
+- `components`
+- `not-found`
 
-要求：
+原则：
 
-- 路由定义集中在 `src/app/router.tsx`
-- 路径常量集中在 `src/constants/routes.ts`
-- 页面文件放在 `src/pages/**`
-- 复杂区块放在 `src/features/**`
+- 页面层不直接写 `fetch`
+- 页面层不保存服务端数据
+- 页面文件变重时，优先把状态、编排、数据读取下沉到对应 feature
 
-## 4. 状态管理边界
+### `src/features`
 
-### Zustand 负责客户端状态
+业务主场，当前已形成这些业务域：
 
-示例：
+- `home`
+- `following`
+- `ditan`
+- `me`
+- `search`
+- `notes`
+- `shops`
+- `components-showcase`
 
-- `auth-store.ts`：本地登录态概要
-- `ui-store.ts`：全局 UI 状态
-- `search-store.ts`：搜索条件、tab、筛选项
+当前常见子结构：
 
-### TanStack Query 负责服务端状态
+- `components`：业务专属 UI
+- `hooks`：Query hooks / mutation hooks
+- `mocks`：原型期或兜底数据
 
-示例：
+约定：
 
-- 首页推荐流
-- 店铺详情
-- 店铺关联笔记
-- 笔记详情
-- 用户主页信息
-- 搜索结果
+- 场景型 feature 可继续按 `features/<domain>/<scene>` 下钻
+- hooks 内负责组合 `api/modules` 与 TanStack Query
+- 页面和组件不要直接依赖底层请求实现
+
+### `src/api`
+
+API 按业务模块拆分：
+
+- `client.ts`：统一请求封装、错误处理、query/body 序列化
+- `modules/*.ts`：按业务域组织接口
+- `fallback.ts`：当前迁移期兜底能力
 
 规则：
 
-- 服务端数据优先走 Query
-- 不要把 Query 数据再复制进 Zustand 充当缓存
-- mutation 完成后通过 Query 失效或更新缓存
+- 页面层不得直接调用 `fetch`
+- API 函数保持薄，不承担展示逻辑
 
-## 5. 页面与 Feature 的边界
+### `src/types`
 
-推荐流程：
+共享领域类型集中维护，当前已有：
 
-1. 在 `types` 中定义或扩展领域类型
-2. 在 `api/modules` 中新增接口函数
-3. 在 `features/<domain>/hooks` 中封装 query / mutation
-4. 在 `features/<domain>/components` 中编排业务 UI
-5. 在 `pages` 中仅做路由承接
+- `api.ts`
+- `common.ts`
+- `page.ts`
+- `note.ts`
+- `shop.ts`
+- `user.ts`
 
-如果新增需求涉及多个业务域，优先按业务边界拆开实现，不要把逻辑塞进单个大页面。
+不要把共享类型散落到页面文件中。
 
-## 6. Tailwind 与组件复用约定
+### `src/components`
 
-- 当前阶段优先做骨架和占位结构
-- 不要为追求 UI 精细度而过早引入复杂设计系统
-- 当同类结构出现重复时，再抽离共享组件
-- 共享组件应偏展示层，业务状态和数据获取留在 feature
+仅放跨业务复用组件，保持展示层属性，避免塞入强业务耦合逻辑。
 
-## 7. 提示词资产沉淀规则
+### `src/contexts`
 
-这是强制规则。
+当前用于预览工作台上下文，例如 `preview-state-context.tsx`。
 
-当 AI 收到具有项目价值的用户提示词时，必须同步归档到 `ditan-app/docs/ai-prompts`，作为长期可检索的项目文档资产。
+### `src/constants`
 
-### 归档范围
+统一维护路由常量与 Query Keys。
 
-需要归档：
+### `src/styles`
 
-- 明确的需求说明
-- 架构约束
-- 目录结构要求
-- 页面 / 模块设计要求
-- 与后续实现直接相关的任务提示词
-- 对协作流程、代码规范、边界要求的补充说明
+集中维护全局样式、主题和字体文件。当前 Tailwind 使用 `@tailwindcss/vite`，没有单独的 `tailwind.config.*`。
 
-可不归档：
+### `src/stores`
 
-- 单纯寒暄
-- 无实质约束的简短确认
-- 与项目实现无关的临时对话
+当前目录保留边界说明，尚未形成稳定的全局 Zustand store。
 
-### 归档目录规划
+只有这类状态允许进入 store：
 
-AI 应自行规划目录和文件名，默认建议采用：
+- 全局 UI 状态
+- 本地偏好设置
+- 仅前端存在的筛选条件
+- 轻量登录态概要
 
-- `ditan-app/docs/ai-prompts/frontend/<YYYY-MM>/`
+以下内容禁止进入 store：
 
-文件命名要求：
+- 店铺详情
+- 笔记详情
+- 搜索结果
+- 用户主页远程数据
+- 任何应由 TanStack Query 托管的服务端数据
 
-- 使用日期前缀
-- 名称可检索
-- 尽量使用 ASCII 文件名
-- 体现主题，不要使用 `prompt1.md` 这类无语义命名
+## 3. 路由现状
 
-推荐格式：
+路由定义集中在 `src/app/router.tsx`，路径常量集中在 `src/constants/routes.ts`。
+
+当前主路由包含：
+
+- `/`
+- `/following`
+- `/ditan`
+- `/publish`
+- `/me`
+- `/search`
+- `/notes/:noteId`
+- `/shops/:shopId`
+- `/components`
+
+当前还保留了若干 legacy redirect：
+
+- `/profile`
+- `/note/:id`
+- `/store/:id`
+- `/users/:userId`
+- `/auth/login`
+
+修改路由时优先保持：
+
+- `router.tsx` 为唯一装配入口
+- `routes.ts` 为路径常量唯一来源
+- 非必要不要随意删除兼容重定向
+
+## 4. 状态管理边界
+
+### TanStack Query
+
+负责服务端状态：
+
+- 首页流
+- 关注流
+- 搜索结果
+- 笔记详情
+- 店铺详情
+- 我的页面资料
+
+### Zustand
+
+只负责客户端本地状态，不做接口缓存层。
+
+规则：
+
+- 不要把 Query 数据复制进 Zustand
+- mutation 后优先通过 Query 失效或更新缓存
+
+## 5. Mocks 与真实接口
+
+当前项目处于 mock 与 query hooks 并存阶段。
+
+要求：
+
+- mocks 只放在对应 feature 域内
+- 新增 mock 时优先走 `features/<domain>/mocks`
+- 接入真实接口后，优先让页面走 hooks，不要继续让页面直连 mock 文件
+- 某业务域完全切到真实数据后，应清理无用 mock
+
+## 6. 协作要求
+
+- 修改前先检查现有结构，不要按想象重建目录
+- 不要擅自替换技术栈
+- 不要把业务逻辑上提回 `pages`
+- 不要把远程数据放进 Zustand
+- 保持文件职责单一，命名可预测
+- 小步改动，优先延续当前结构，而不是推倒重来
+
+## 7. 提示词归档
+
+具有项目价值的用户提示词必须归档到：
+
+- `docs/ai-prompts/frontend/<YYYY-MM>/`
+
+建议文件名：
 
 - `<YYYY-MM-DD>_<topic>.md`
-- 如果同日多份，可追加序号：`<YYYY-MM-DD>_<topic>_01.md`
 
-### 归档文件内容建议
-
-每份提示词文档建议包含：
+文档尽量包含：
 
 - 标题
 - 日期
 - 来源范围
-- 主题标签
+- 标签
 - 原始提示词
-- 如有必要，补充简短上下文说明
+- 必要的上下文说明
 
-### 去重规则
+若同主题已归档，优先更新，不重复制造近似副本。
 
-- 若同一轮提示词已归档，优先更新现有文档，不重复创建近似副本
-- 若是对原提示词的补充约束，可新建补充文档，或在原文档中追加“补充要求”区块
-
-## 8. Commit 提交规范
-
-这是强制规则。
-
-当 AI 生成提交时，必须保证 commit message 清晰、可追踪、可复盘，禁止使用无语义提交信息。
-
-### 基本要求
-
-- 提交信息必须使用英文 type 前缀 + 中文主题摘要
-- 一次提交只聚焦一类改动，避免把无关改动混在一起
-- 提交前应确认本次改动目标明确，且与当前任务直接相关
-- 若存在无法验证的部分，应在最终说明中明确指出，不要在提交信息中伪造“已完成验证”
-
-### 推荐格式
-
-推荐使用：
-
-- `<type>: <中文摘要>`
-
-常用 type：
-
-- `feat`：新功能
-- `fix`：问题修复
-- `refactor`：重构
-- `docs`：文档或协作规范调整
-- `chore`：工程配置、依赖、脚手架调整
-- `test`：测试相关
-
-示例：
-
-- `feat: 初始化前端工程底座与路由骨架`
-- `docs: 补充 AI 提示词归档与协作规范`
-- `chore: 配置 Vite React TypeScript 与 Tailwind 基础环境`
-
-### 拆分原则
-
-- 结构性初始化与业务功能开发尽量分开提交
-- 文档规范变更可单独提交
-- 大改动应拆成可理解、可回滚的多次提交
-
-## 9. Agent 协作要求
-
-- 修改前先检查现有目录和文件
-- 不要擅自替换技术栈
-- 不要把远程数据缓存塞进 Zustand
-- 不要把共享类型写死在页面文件里
-- 不要为了省事把业务逻辑上提到 pages
-- 优先保证文件边界清晰，便于后续 AI 接力
-
-## 10. 常用命令
+## 8. 常用命令
 
 - 安装依赖：`npm install`
 - 启动开发环境：`npm run dev`
 - 类型检查：`npm run typecheck`
 - 构建：`npm run build`
 
-## 11. 交付标准
+## 9. 交付标准
 
-每次改动都应尽量满足：
+每次改动尽量满足：
 
 - 目录结构可预测
-- 文件职责单一
-- 类型定义集中
-- 路由边界明确
-- API 按业务模块组织
-- 后续页面补 UI 时无需推翻底座
-- 后续 AI 接手时无需重新猜测架构意图
+- 页面职责轻
+- feature 边界清晰
+- API 按业务拆分
+- 类型集中维护
+- Query 与 Zustand 分工明确
+- 后续继续补 UI 时不需要推翻当前底座

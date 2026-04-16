@@ -9,10 +9,11 @@ import { HomeSkeletonNote } from "./home-skeleton-note";
 
 type HomeFeedProps = {
   activeCategory: string;
-  appState: AsyncViewState;
   contentType: string;
   notes: NoteCardData[];
+  onRetry?: () => void;
   shops: ShopCardData[];
+  state: AsyncViewState;
 };
 
 const renderSkeleton = (contentType: string) => {
@@ -50,14 +51,22 @@ const renderSkeleton = (contentType: string) => {
   );
 };
 
-export const HomeFeed = ({ activeCategory, appState, contentType, notes, shops }: HomeFeedProps) => {
+export const HomeFeed = ({
+  activeCategory,
+  contentType,
+  notes,
+  onRetry,
+  shops,
+  state,
+}: HomeFeedProps) => {
   return (
     <div className="flex-1 overflow-y-auto bg-muted p-sm relative">
       <ListContainer
-        state={appState}
+        state={state}
         loadingComponent={renderSkeleton(contentType)}
         emptyMessage={`暂无${activeCategory}相关内容`}
         errorMessage="首页内容加载失败"
+        onRetry={onRetry}
       >
         <AnimatePresence mode="wait">
           <motion.div

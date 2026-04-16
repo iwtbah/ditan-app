@@ -10,7 +10,6 @@ const homeNotesFallback = createListResponse(HOME_NOTES);
 export function useHomeNotesQuery(query: HomeFeedQuery, enabled = true) {
   return useQuery({
     enabled,
-    initialData: homeNotesFallback,
     queryKey: [...QUERY_KEYS.home.notes(query.category), query.contentType ?? "探店日记"] as const,
     queryFn: async () =>
       withApiFallback(

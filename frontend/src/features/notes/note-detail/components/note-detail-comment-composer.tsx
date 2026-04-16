@@ -1,9 +1,10 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Heart, MessageSquare, Send, Star } from "lucide-react";
+import type { AsyncViewState } from "@/types/common";
 
 type NoteDetailCommentComposerProps = {
-  appState: string;
+  appState: AsyncViewState;
   commenting: boolean;
   isCollected: boolean;
   isLiked: boolean;

@@ -1,18 +1,11 @@
+import type { ComponentType } from 'react';
 import { Navigate, createBrowserRouter, useParams } from 'react-router-dom';
 import { RouteErrorBoundary } from '@/components/feedback/route-error-boundary';
 import { ROUTE_PATHS } from '@/constants/routes';
 import { MobileAppLayout } from '@/layouts/mobile-app-layout';
+import { PreviewWorkspaceLayout } from '@/layouts/preview-workspace-layout';
 import { WorkspaceLayout } from '@/layouts/workspace-layout';
-import { ComponentsShowcase, pageMeta as componentsPageMeta } from '@/pages/components';
-import { Ditan, pageMeta as ditanPageMeta } from '@/pages/ditan';
-import { Following, pageMeta as followingPageMeta } from '@/pages/following';
-import { Home, pageMeta as homePageMeta } from '@/pages/home';
-import { Me, pageMeta as mePageMeta } from '@/pages/me';
-import { NoteDetail, pageMeta as noteDetailPageMeta } from '@/pages/notes/note-detail';
-import { NotFoundPage, pageMeta as notFoundPageMeta } from '@/pages/not-found';
-import { Publish, pageMeta as publishPageMeta } from '@/pages/publish';
-import { Search, pageMeta as searchPageMeta } from '@/pages/search';
-import { StoreDetail, pageMeta as storeDetailPageMeta } from '@/pages/shops/store-detail';
+import type { PageRouteMeta } from '@/types/page';
 
 function LegacyNoteRedirect() {
   const { id = '' } = useParams();
@@ -24,6 +17,88 @@ function LegacyStoreRedirect() {
   return <Navigate replace to={ROUTE_PATHS.shopDetail(id)} />;
 }
 
+type LazyPageModule = {
+  default?: ComponentType;
+  [key: string]: unknown;
+  pageMeta: PageRouteMeta;
+};
+
+function lazyPage(
+  importPage: () => Promise<LazyPageModule>,
+  componentExport: string = 'default',
+) {
+  return async () => {
+    const module = await importPage();
+    const component = module[componentExport];
+
+    if (typeof component !== 'function') {
+      throw new Error(`Route component export "${componentExport}" is missing.`);
+    }
+
+    return {
+      Component: component as ComponentType,
+      handle: { pageMeta: module.pageMeta },
+    };
+  };
+}
+
+function createMobileAppRoutes() {
+  return [
+    {
+      index: true,
+      lazy: lazyPage(() => import('@/pages/home')),
+    },
+    {
+      path: ROUTE_PATHS.following.slice(1),
+      lazy: lazyPage(() => import('@/pages/following')),
+    },
+    {
+      path: ROUTE_PATHS.ditan.slice(1),
+      lazy: lazyPage(() => import('@/pages/ditan')),
+    },
+    {
+      path: ROUTE_PATHS.publish.slice(1),
+      lazy: lazyPage(() => import('@/pages/publish')),
+    },
+    {
+      path: ROUTE_PATHS.my.slice(1),
+      lazy: lazyPage(() => import('@/pages/me')),
+    },
+    {
+      path: ROUTE_PATHS.search.slice(1),
+      lazy: lazyPage(() => import('@/pages/search')),
+    },
+    {
+      path: ROUTE_PATHS.noteDetail().slice(1),
+      lazy: lazyPage(() => import('@/pages/notes/note-detail')),
+    },
+    {
+      path: ROUTE_PATHS.shopDetail().slice(1),
+      lazy: lazyPage(() => import('@/pages/shops/store-detail')),
+    },
+    {
+      path: ROUTE_PATHS.legacyProfile.slice(1),
+      element: <Navigate replace to={ROUTE_PATHS.my} />,
+    },
+    {
+      path: ROUTE_PATHS.legacyNoteDetail().slice(1),
+      element: <LegacyNoteRedirect />,
+    },
+    {
+      path: ROUTE_PATHS.legacyShopDetail().slice(1),
+      element: <LegacyStoreRedirect />,
+    },
+    {
+      path: ROUTE_PATHS.userProfile().slice(1),
+      element: <Navigate replace to={ROUTE_PATHS.my} />,
+    },
+    {
+      path: ROUTE_PATHS.login.slice(1),
+      element: <Navigate replace to={ROUTE_PATHS.my} />,
+    },
+  ];
+}
+
 export const router = createBrowserRouter([
   {
     path: ROUTE_PATHS.home,
@@ -32,79 +107,31 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTE_PATHS.components.slice(1),
-        handle: { pageMeta: componentsPageMeta },
-        element: <ComponentsShowcase />,
+        lazy: lazyPage(() => import('@/pages/components')),
       },
       {
         element: <MobileAppLayout />,
-        children: [
-          {
-            index: true,
-            handle: { pageMeta: homePageMeta },
-            element: <Home />,
-          },
-          {
-            path: ROUTE_PATHS.following.slice(1),
-            handle: { pageMeta: followingPageMeta },
-            element: <Following />,
-          },
-          {
-            path: ROUTE_PATHS.ditan.slice(1),
-            handle: { pageMeta: ditanPageMeta },
-            element: <Ditan />,
-          },
-          {
-            path: ROUTE_PATHS.publish.slice(1),
-            handle: { pageMeta: publishPageMeta },
-            element: <Publish />,
-          },
-          {
-            path: ROUTE_PATHS.my.slice(1),
-            handle: { pageMeta: mePageMeta },
-            element: <Me />,
-          },
-          {
-            path: ROUTE_PATHS.search.slice(1),
-            handle: { pageMeta: searchPageMeta },
-            element: <Search />,
-          },
-          {
-            path: ROUTE_PATHS.noteDetail().slice(1),
-            handle: { pageMeta: noteDetailPageMeta },
-            element: <NoteDetail />,
-          },
-          {
-            path: ROUTE_PATHS.shopDetail().slice(1),
-            handle: { pageMeta: storeDetailPageMeta },
-            element: <StoreDetail />,
-          },
-          {
-            path: ROUTE_PATHS.legacyProfile.slice(1),
-            element: <Navigate replace to={ROUTE_PATHS.my} />,
-          },
-          {
-            path: ROUTE_PATHS.legacyNoteDetail().slice(1),
-            element: <LegacyNoteRedirect />,
-          },
-          {
-            path: ROUTE_PATHS.legacyShopDetail().slice(1),
-            element: <LegacyStoreRedirect />,
-          },
-          {
-            path: ROUTE_PATHS.userProfile().slice(1),
-            element: <Navigate replace to={ROUTE_PATHS.my} />,
-          },
-          {
-            path: ROUTE_PATHS.login.slice(1),
-            element: <Navigate replace to={ROUTE_PATHS.my} />,
-          },
-        ],
+        children: createMobileAppRoutes(),
       },
     ],
   },
+  ...(import.meta.env.DEV
+    ? [
+        {
+          path: ROUTE_PATHS.preview,
+          element: <PreviewWorkspaceLayout />,
+          errorElement: <RouteErrorBoundary />,
+          children: [
+            {
+              element: <MobileAppLayout showPreviewMeta />,
+              children: createMobileAppRoutes(),
+            },
+          ],
+        },
+      ]
+    : []),
   {
     path: '*',
-    handle: { pageMeta: notFoundPageMeta },
-    element: <NotFoundPage />,
+    lazy: lazyPage(() => import('@/pages/not-found'), 'NotFoundPage'),
   },
 ]);

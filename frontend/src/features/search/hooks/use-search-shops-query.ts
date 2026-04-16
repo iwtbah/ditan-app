@@ -10,7 +10,6 @@ const searchShopsFallback = createListResponse(SEARCH_SHOPS);
 export function useSearchShopsQuery(query: SearchQuery, enabled = Boolean(query.keyword)) {
   return useQuery({
     enabled,
-    initialData: searchShopsFallback,
     queryKey: QUERY_KEYS.search.shops(query.keyword),
     queryFn: async () =>
       withApiFallback(

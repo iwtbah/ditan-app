@@ -10,7 +10,6 @@ const searchNotesFallback = createListResponse(SEARCH_NOTES);
 export function useSearchNotesQuery(query: SearchQuery, enabled = Boolean(query.keyword)) {
   return useQuery({
     enabled,
-    initialData: searchNotesFallback,
     queryKey: QUERY_KEYS.search.notes(query.keyword),
     queryFn: async () =>
       withApiFallback(

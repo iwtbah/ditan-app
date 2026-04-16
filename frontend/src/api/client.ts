@@ -41,6 +41,27 @@ function resolveBody(body?: ApiRequestConfig["body"]) {
   return JSON.stringify(body);
 }
 
+function resolveBaseUrl() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+
+  if (!baseUrl) {
+    return "";
+  }
+
+  return baseUrl.replace(/\/+$/, "");
+}
+
+function resolveRequestUrl(path: string, query?: ApiRequestConfig["query"]) {
+  const resolvedPath = `${path}${buildQueryString(query)}`;
+  const baseUrl = resolveBaseUrl();
+
+  if (!baseUrl || /^https?:\/\//.test(path)) {
+    return resolvedPath;
+  }
+
+  return `${baseUrl}${resolvedPath.startsWith("/") ? resolvedPath : `/${resolvedPath}`}`;
+}
+
 export async function apiRequest<T>(
   path: string,
   { headers, query, body, ...init }: ApiRequestConfig = {},
@@ -54,7 +75,7 @@ export async function apiRequest<T>(
         }
       : headers;
 
-  const response = await fetch(`${path}${buildQueryString(query)}`, {
+  const response = await fetch(resolveRequestUrl(path, query), {
     ...init,
     body: resolvedBody,
     headers: resolvedHeaders,

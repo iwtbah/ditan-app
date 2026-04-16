@@ -14,7 +14,6 @@ const meProfileFallback = {
 export function useMeProfileQuery(enabled = true) {
   return useQuery({
     enabled,
-    initialData: meProfileFallback,
     queryKey: QUERY_KEYS.me.profile(),
     queryFn: async () =>
       withApiFallback(

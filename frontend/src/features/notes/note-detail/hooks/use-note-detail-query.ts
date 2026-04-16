@@ -18,7 +18,6 @@ const noteDetailFallback = {
 export function useNoteDetailQuery(noteId: string, enabled = Boolean(noteId)) {
   return useQuery({
     enabled,
-    initialData: noteDetailFallback,
     queryKey: QUERY_KEYS.notes.detail(noteId),
     queryFn: async () =>
       withApiFallback(

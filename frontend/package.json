@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:mock": "vite --mode mock",
+    "dev:api": "vite --mode api",
     "build": "tsc --noEmit && vite build",
+    "build:mock": "tsc --noEmit && vite build --mode mock",
+    "build:api": "tsc --noEmit && vite build --mode api",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },

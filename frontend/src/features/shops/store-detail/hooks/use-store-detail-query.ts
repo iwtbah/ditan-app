@@ -24,7 +24,6 @@ const storeDetailFallback = {
 export function useStoreDetailQuery(shopId: string, enabled = Boolean(shopId)) {
   return useQuery({
     enabled,
-    initialData: storeDetailFallback,
     queryKey: QUERY_KEYS.shops.detail(shopId),
     queryFn: async () =>
       withApiFallback(

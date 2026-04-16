@@ -7,18 +7,15 @@ import {
   useTransform,
 } from "motion/react";
 import { Heart, MapPin, Navigation2, X } from "lucide-react";
-import { DITAN_INITIAL_CARDS, type DitanCardData } from "./mocks";
+import type { DitanCardData } from "./mocks";
+import { useDitanCardStack } from "./hooks";
 
 export const Ditan = () => {
-  const [cards, setCards] = useState(DITAN_INITIAL_CARDS);
-
-  const handleRemove = (id: number) => {
-    setCards((prev) => prev.filter((card) => card.id !== id));
-  };
+  const { cards, consumeTopCard, removeCard, resetCards } = useDitanCardStack();
 
   const handleManualSwipe = (_direction: "left" | "right") => {
     if (cards.length > 0) {
-      setCards((prev) => prev.slice(1));
+      consumeTopCard();
     }
   };
 
@@ -49,7 +46,7 @@ export const Ditan = () => {
             </div>
             <p className="text-[15px] font-bold text-text-primary">附近没有更多新发现了</p>
             <button
-              onClick={() => setCards(DITAN_INITIAL_CARDS)}
+              onClick={resetCards}
               className="mt-6 px-8 py-3 bg-primary hover:bg-primary/90 active:scale-95 transition-all rounded-full text-primary-foreground text-[14px] font-bold shadow-md"
             >
               扩大搜索范围
@@ -68,7 +65,7 @@ export const Ditan = () => {
                     card={card}
                     isTop={isTop}
                     index={index}
-                    onRemove={handleRemove}
+                    onRemove={removeCard}
                   />
                 );
               })}

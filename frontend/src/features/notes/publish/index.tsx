@@ -3,16 +3,16 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { PublishStoreOption } from "@/types/shop";
-import { PUBLISH_INITIAL_IMAGES, PUBLISH_STORE_OPTIONS } from "../mocks";
-import { usePublishNoteMutation } from "./hooks";
+import { usePublishBootstrap, usePublishNoteMutation } from "./hooks";
 import { PublishEditor, PublishHeader, PublishStoreSheet } from "./components";
 
 export const Publish = () => {
   const navigate = useNavigate();
   const publishNoteMutation = usePublishNoteMutation();
+  const { initialImages, storeOptions } = usePublishBootstrap();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [images, setImages] = useState(PUBLISH_INITIAL_IMAGES);
+  const [images, setImages] = useState(initialImages);
   const [storeOpen, setStoreOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<PublishStoreOption | null>(null);
   const [isRecommended, setIsRecommended] = useState(true);
@@ -93,7 +93,7 @@ export const Publish = () => {
       />
       <PublishStoreSheet
         isOpen={storeOpen}
-        options={PUBLISH_STORE_OPTIONS}
+        options={storeOptions}
         selectedStore={selectedStore}
         onClose={() => setStoreOpen(false)}
         onCreateStore={() => {

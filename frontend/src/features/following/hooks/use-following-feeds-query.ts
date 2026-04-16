@@ -17,7 +17,6 @@ function getFollowingFallback(query: FollowingFeedQuery) {
 export function useFollowingFeedsQuery(query: FollowingFeedQuery, enabled = true) {
   return useQuery({
     enabled,
-    initialData: getFollowingFallback(query),
     queryKey: QUERY_KEYS.following.feeds(query.filter),
     queryFn: async () =>
       withApiFallback(

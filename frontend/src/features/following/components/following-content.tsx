@@ -3,20 +3,22 @@ import { AnimatePresence, motion } from "motion/react";
 import { Heart, MapPin, MessageSquare, MoreHorizontal, Share, Star, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
+import { ErrorState } from "@/components/feedback/wireframe-ui";
+import type { AsyncViewState } from "@/types/common";
 import type { FollowingFeedData } from "@/types/note";
 
 type FollowingContentProps = {
   feeds: FollowingFeedData[];
-  isEmpty: boolean;
-  isLoading: boolean;
   onGoHome: () => void;
+  onRetry?: () => void;
+  state: AsyncViewState;
 };
 
-export const FollowingContent = ({ feeds, isEmpty, isLoading, onGoHome }: FollowingContentProps) => {
+export const FollowingContent = ({ feeds, onGoHome, onRetry, state }: FollowingContentProps) => {
   return (
     <div className="flex-1 overflow-y-auto no-scrollbar bg-muted/20 relative pb-[90px]">
       <AnimatePresence mode="wait">
-        {isLoading ? (
+        {state === "Loading" ? (
           <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-4 space-y-4">
             {[1, 2].map((item) => (
               <div key={item} className="bg-card rounded-[16px] shadow-[0_2px_16px_rgba(0,0,0,0.03)] border border-border/40 p-4 mx-4 animate-pulse">
@@ -38,7 +40,17 @@ export const FollowingContent = ({ feeds, isEmpty, isLoading, onGoHome }: Follow
               </div>
             ))}
           </motion.div>
-        ) : isEmpty ? (
+        ) : state === "Error" ? (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            className="min-h-[65vh] flex items-center justify-center px-4"
+          >
+            <ErrorState message="关注动态加载失败" onRetry={onRetry} />
+          </motion.div>
+        ) : state === "Empty" ? (
           <motion.div
             key="empty"
             initial={{ opacity: 0, scale: 0.95 }}

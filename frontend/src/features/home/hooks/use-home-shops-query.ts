@@ -10,7 +10,6 @@ const homeShopsFallback = createListResponse(HOME_SHOPS);
 export function useHomeShopsQuery(query: HomeFeedQuery, enabled = true) {
   return useQuery({
     enabled,
-    initialData: homeShopsFallback,
     queryKey: [...QUERY_KEYS.home.shops(query.category), query.contentType ?? "店铺"] as const,
     queryFn: async () =>
       withApiFallback(
