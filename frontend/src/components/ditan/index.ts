@@ -5,5 +5,6 @@
 export * from "./content-skeletons";
 export * from "./content-cards";
 export * from "./interactive";
+export * from "./page-header";
 export * from "./primitives";
 export * from "./structure";

@@ -60,7 +60,7 @@ export function MobileAppLayout({ showPreviewMeta = false }: MobileAppLayoutProp
       <AnimatePresence>
         {currentPageMeta?.showTabBar !== false && (
             <motion.div
-              initial={{ y: 100, opacity: 0 }}
+              initial={false}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}

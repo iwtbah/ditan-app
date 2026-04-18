@@ -1,7 +1,8 @@
 import type { NoteComment, NoteDetailData } from "@/types/note";
 import type { LinkedStoreData } from "@/types/shop";
+import { localizeMockData } from "@/features/shared/mocks/localize-mock-data";
 
-export const NOTE_DETAIL_MOCK_NOTE: NoteDetailData = {
+export const NOTE_DETAIL_MOCK_NOTE: NoteDetailData = localizeMockData({
   images: [
     "https://images.unsplash.com/photo-1521017432531-fbd92d768814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
     "https://images.unsplash.com/photo-1606757870480-975652100251?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
@@ -29,15 +30,15 @@ export const NOTE_DETAIL_MOCK_NOTE: NoteDetailData = {
     "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=100",
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=100",
   ]
-};
+});
 
-export const NOTE_DETAIL_MOCK_STORE: LinkedStoreData = {
+export const NOTE_DETAIL_MOCK_STORE: LinkedStoreData = localizeMockData({
   id: 1,
   name: "半岛咖啡馆 Peninsula Coffee",
   tags: ["咖啡", "高颜值", "距你 1.2km"],
   image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200",
   rating: "4.9"
-};
+});
 
 export const NOTE_DETAIL_INITIAL_COMMENTS: NoteComment[] = [
   { id: 1, author: "夏日限定", content: "真的很好看！上周刚去过，老板人超好！", time: "昨天 18:00", likes: 45, liked: false, hasReply: true },

@@ -140,6 +140,10 @@ type PullEndScrollAreaProps = {
   enabled?: boolean;
   hintText?: string;
   maxPullDistance?: number;
+  onScroll?: React.UIEventHandler<HTMLDivElement>;
+  onTouchEnd?: React.TouchEventHandler<HTMLDivElement>;
+  onTouchStart?: React.TouchEventHandler<HTMLDivElement>;
+  onTouchRelease?: (scrollTop: number) => void;
   scrollRef?: React.MutableRefObject<HTMLDivElement | null>;
   scrollClassName?: string;
   wrapperClassName?: string;
@@ -152,6 +156,10 @@ export const PullEndScrollArea = ({
   enabled = true,
   hintText = "没有更多动态了",
   maxPullDistance = 52,
+  onScroll,
+  onTouchEnd,
+  onTouchStart,
+  onTouchRelease,
   scrollRef,
   scrollClassName,
   wrapperClassName = "flex-1 relative overflow-hidden",
@@ -182,6 +190,7 @@ export const PullEndScrollArea = ({
   };
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    onTouchStart?.(event);
     if (!enabled) return;
 
     touchStateRef.current = {
@@ -215,11 +224,14 @@ export const PullEndScrollArea = ({
     rawPullOffset.set(-Math.min(maxPullDistance, dragDistance * 0.42));
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
     touchStateRef.current = null;
     if (rawPullOffset.get() !== 0) {
       rawPullOffset.set(0);
     }
+
+    onTouchRelease?.(resolvedScrollRef.current?.scrollTop ?? 0);
+    onTouchEnd?.(event);
   };
 
   return (
@@ -233,6 +245,7 @@ export const PullEndScrollArea = ({
             }
           }}
           className={scrollClassName}
+          onScroll={onScroll}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}

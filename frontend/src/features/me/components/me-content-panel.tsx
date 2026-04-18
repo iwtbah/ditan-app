@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { FeedCard, ListContainer, ShopCard, profilePanelClassName } from "@/components/ditan";
+import { FeedCard, ListContainer, ShopCard } from "@/components/ditan";
 import type { AsyncViewState } from "@/types/common";
 import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
@@ -30,8 +30,8 @@ export const MeContentPanel = ({
   const showShops = activeTab !== "笔记" && (subFilter === "全部" || subFilter === "店铺");
 
   return (
-    <div className={`${profilePanelClassName} overflow-hidden flex flex-col min-h-[500px]`}>
-      <div className="flex border-b border-border/40 text-[15px] font-bold px-2 pt-2">
+    <section className="overflow-hidden rounded-t-[30px] border border-border/40 bg-background/94 shadow-[0_-2px_16px_rgba(0,0,0,0.03)] backdrop-blur-xl">
+      <div className="flex border-b border-border/40 px-2 pt-2 text-[15px] font-bold">
         {["笔记", "收藏", "赞过"].map((tab) => (
           <button
             key={tab}
@@ -50,7 +50,7 @@ export const MeContentPanel = ({
       </div>
 
       {(activeTab === "收藏" || activeTab === "赞过") && (
-        <div className="flex gap-[8px] px-4 py-3 border-b border-border/30 bg-muted/20">
+        <div className="flex gap-[8px] border-b border-border/30 bg-muted/20 px-4 py-3">
           {["全部", "店铺", "笔记"].map((filter) => (
             <button
               key={filter}
@@ -67,7 +67,7 @@ export const MeContentPanel = ({
         </div>
       )}
 
-      <ListContainer state={appState} className="flex-1 bg-muted/10 p-3" onRetry={onRetry}>
+      <ListContainer state={appState} className="flex-1 bg-transparent p-3 pt-4" onRetry={onRetry}>
         {showNotes && (
           <div className="grid grid-cols-2 gap-[10px] mb-4">
             {notes.map((note) => (
@@ -104,6 +104,6 @@ export const MeContentPanel = ({
           </div>
         )}
       </ListContainer>
-    </div>
+    </section>
   );
 };

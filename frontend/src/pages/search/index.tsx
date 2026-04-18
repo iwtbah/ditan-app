@@ -3,7 +3,7 @@ import type { PageRouteMeta } from "@/types/page";
 
 export const pageMeta: PageRouteMeta = {
   frameName: "搜索页",
-  showTabBar: true,
+  showTabBar: false,
 };
 
 /**

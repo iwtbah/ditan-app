@@ -7,7 +7,7 @@ import { HomeFeed, HomeHeader } from "./components";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const [contentType, setContentType] = useState("探店日记");
+  const [contentType, setContentType] = useState<"探店日记" | "店铺">("探店日记");
   const [activeCategory, setActiveCategory] = useState("推荐");
   const notesQuery = useHomeNotesQuery(
     { category: activeCategory, contentType: "探店日记" },
@@ -32,13 +32,20 @@ export const Home = () => {
         activeCategory={activeCategory}
         contentType={contentType}
         onCategoryChange={setActiveCategory}
-        onContentTypeChange={setContentType}
+        onContentTypeChange={(value) => setContentType(value as "探店日记" | "店铺")}
         onOpenSearch={() => navigate(ROUTE_PATHS.search)}
       />
       <HomeFeed
         activeCategory={activeCategory}
         contentType={contentType}
         notes={notes}
+        onSwipeMode={(direction) => {
+          setContentType((current) => {
+            if (direction === "left" && current === "探店日记") return "店铺";
+            if (direction === "right" && current === "店铺") return "探店日记";
+            return current;
+          });
+        }}
         shops={shops}
         state={viewState}
         onRetry={() => {

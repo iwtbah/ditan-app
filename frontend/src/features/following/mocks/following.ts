@@ -1,6 +1,7 @@
 import type { FollowingFeedData } from "@/types/note";
+import { localizeMockData } from "@/features/shared/mocks/localize-mock-data";
 
-export const FOLLOWING_FEEDS: FollowingFeedData[] = [
+export const FOLLOWING_FEEDS: FollowingFeedData[] = localizeMockData([
   {
     id: 1,
     type: '笔记',
@@ -23,4 +24,4 @@ export const FOLLOWING_FEEDS: FollowingFeedData[] = [
     shopInfo: { name: '隐泉日式料理', city: '北京' },
     stats: { likes: 89, comments: 12, stars: 22, isLiked: false }
   }
-];
+]);

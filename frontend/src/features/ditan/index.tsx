@@ -6,6 +6,7 @@ import {
   useMotionValue,
   useTransform,
 } from "motion/react";
+import { HeaderActionButton, HeaderMetaChip, PageHeader } from "@/components/ditan";
 import { Heart, MapPin, Navigation2, X } from "lucide-react";
 import type { DitanCardData } from "./mocks";
 import { useDitanCardStack } from "./hooks";
@@ -21,21 +22,25 @@ export const Ditan = () => {
 
   return (
     <div className="flex flex-col h-full bg-background relative overflow-hidden">
-      <div className="pt-safe px-4 py-4 flex items-center justify-between z-20">
-        <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-xl px-3 py-1.5 rounded-full border border-border/50 shadow-sm">
-          <MapPin size={14} className="text-primary" strokeWidth={2.5} />
-          <span className="text-text-primary text-[12px] font-bold">北京</span>
-        </div>
-        <div className="text-text-primary font-bold tracking-[0.1em] text-[16px]">迪探</div>
-        <div className="w-[72px] flex justify-end">
-          <div className="w-[32px] h-[32px] rounded-full bg-card/60 backdrop-blur-xl border border-border/50 shadow-sm flex items-center justify-center">
-            <Navigation2 size={16} className="text-text-primary" strokeWidth={2.5} />
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        title="迪探"
+        leading={(
+          <HeaderMetaChip
+            icon={<MapPin size={14} className="text-primary" strokeWidth={2.5} />}
+            label="北京"
+          />
+        )}
+        actions={(
+          <HeaderActionButton aria-label="打开定位导航">
+            <Navigation2 size={18} strokeWidth={2.4} />
+          </HeaderActionButton>
+        )}
+      />
 
-      <div className="text-center text-text-tertiary text-[11px] font-bold tracking-widest mb-4 z-20">
-        左滑略过 · 右滑想去
+      <div className="z-20 px-4 pt-2 pb-4 text-center">
+        <p className="text-[12px] font-bold tracking-[0.14em] text-text-secondary">
+          左滑略过 · 右滑想去
+        </p>
       </div>
 
       <div className="flex-1 relative w-full px-5 pb-32 pt-2 flex justify-center items-center z-10">

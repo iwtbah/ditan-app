@@ -1,8 +1,9 @@
 import type { NoteCardData } from "@/types/note";
 import type { ShopCardData } from "@/types/shop";
-import type { ProfileSummary } from "@/types/user";
+import type { ProfileSummary, RecentBrowseItem } from "@/types/user";
+import { localizeMockData } from "@/features/shared/mocks/localize-mock-data";
 
-export const PROFILE_SUMMARY: ProfileSummary = {
+export const PROFILE_SUMMARY: ProfileSummary = localizeMockData({
   avatar:
     "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   badge: "探店达人",
@@ -12,16 +13,35 @@ export const PROFILE_SUMMARY: ProfileSummary = {
   followingCount: "128",
   likesAndCollections: "12.5k",
   name: "小明的小名叫明明",
-};
+});
 
-export const PROFILE_NOTES: NoteCardData[] = [
+export const PROFILE_NOTES: NoteCardData[] = localizeMockData([
   { id: 1, title: "绝美日落观景台", author: "明明", authorAvatar: "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", likes: 121, height: "h-[180px]", image: "https://images.unsplash.com/photo-1617965215075-b1f768dc8a61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW5zZXQlMjB2aWV3fGVufDF8fHx8MTc3NjA4OTY1MHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
   { id: 2, title: "隐藏在弄堂里的古着店", author: "明明", authorAvatar: "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", likes: 122, height: "h-[160px]", image: "https://images.unsplash.com/photo-1721884258144-5d788061e4c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwY2xvdGhpbmclMjBzdG9yZXxlbnwxfHx8fDE3NzYwODk2NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
   { id: 3, title: "周末城市公园野餐指南", author: "明明", authorAvatar: "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", likes: 89, height: "h-[180px]", image: "https://images.unsplash.com/photo-1668009219418-4ece0d9e36c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwcGFya3xlbnwxfHx8fDE3NzYwODk2NTh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
   { id: 4, title: "极简纯白风咖啡馆打卡", author: "明明", authorAvatar: "https://images.unsplash.com/photo-1572604745465-3f65869e2c67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXJsJTIwcG9ydHJhaXQlMjBhc2lhbnxlbnwxfHx8fDE3NzYwODk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", likes: 210, height: "h-[160px]", image: "https://images.unsplash.com/photo-1648462908676-8305f0eff8e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWZlJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzc2MDg5NjUzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
-];
+]);
 
-export const PROFILE_SHOPS: ShopCardData[] = [
+export const PROFILE_SHOPS: ShopCardData[] = localizeMockData([
   { id: 1, name: "时光机复古杂货铺", rating: "4.8", distance: "1.2km", tags: ["复古", "杂货", "好店推荐"], price: "￥80/人", recommendation: "这里藏着80后的童年回忆", image: "https://images.unsplash.com/photo-1721884258144-5d788061e4c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwY2xvdGhpbmclMjBzdG9yZXxlbnwxfHx8fDE3NzYwODk2NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
   { id: 2, name: "半岛咖啡馆", rating: "4.9", distance: "3.5km", tags: ["咖啡", "下午茶", "高颜值"], price: "￥65/人", recommendation: "拿铁和海盐卷盲点不出错", image: "https://images.unsplash.com/photo-1648462908676-8305f0eff8e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWZlJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzc2MDg5NjUzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
+]);
+
+export const PROFILE_RECENT_BROWSE: RecentBrowseItem[] = [
+  {
+    id: "recent-shop-1",
+    keyword: "半岛咖啡馆",
+    meta: "最近浏览的店铺",
+    targetId: 2,
+    title: "半岛咖啡馆",
+    type: "店铺",
+  },
+  {
+    id: "recent-note-1",
+    keyword: "展览馆",
+    meta: "最近浏览的日记",
+    targetId: 4,
+    title: "城市边缘的展览馆，适合周末慢慢逛一下午",
+    type: "日记",
+  },
 ];

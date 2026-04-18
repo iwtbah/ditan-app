@@ -21,3 +21,12 @@ export interface ProfileSummary {
   likesAndCollections: string;
   name: string;
 }
+
+export interface RecentBrowseItem {
+  id: string;
+  keyword: string;
+  meta: string;
+  targetId: number;
+  title: string;
+  type: "店铺" | "日记";
+}
