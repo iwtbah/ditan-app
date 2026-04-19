@@ -70,36 +70,48 @@ export const MeContentPanel = ({
       <ListContainer state={appState} className="flex-1 bg-transparent p-3 pt-4" onRetry={onRetry}>
         {showNotes && (
           <div className="grid grid-cols-2 gap-[10px] mb-4">
-            {notes.map((note) => (
-              <FeedCard
+            {notes.map((note, index) => (
+              <motion.div
                 key={note.id}
-                id={note.id}
-                title={note.title}
-                author={note.author}
-                authorAvatar={note.authorAvatar}
-                likes={note.likes}
-                liked={activeTab === "赞过"}
-                imageClassName={note.height}
-                image={note.image}
-              />
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22, delay: index * 0.035, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <FeedCard
+                  id={note.id}
+                  title={note.title}
+                  author={note.author}
+                  authorAvatar={note.authorAvatar}
+                  likes={note.likes}
+                  liked={activeTab === "赞过"}
+                  imageClassName={note.height}
+                  image={note.image}
+                />
+              </motion.div>
             ))}
           </div>
         )}
 
         {showShops && (
           <div className="flex flex-col gap-[10px]">
-            {shops.map((shop) => (
-              <ShopCard
+            {shops.map((shop, index) => (
+              <motion.div
                 key={shop.id}
-                id={shop.id}
-                name={shop.name}
-                rating={shop.rating}
-                price={shop.price}
-                recommendation={shop.recommendation}
-                image={shop.image}
-                distance={shop.distance}
-                tags={shop.tags}
-              />
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <ShopCard
+                  id={shop.id}
+                  name={shop.name}
+                  rating={shop.rating}
+                  price={shop.price}
+                  recommendation={shop.recommendation}
+                  image={shop.image}
+                  distance={shop.distance}
+                  tags={shop.tags}
+                />
+              </motion.div>
             ))}
           </div>
         )}

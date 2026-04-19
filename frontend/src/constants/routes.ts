@@ -8,6 +8,7 @@ export const ROUTE_PATHS = {
   my: '/me',
   legacyProfile: '/profile',
   search: '/search',
+  settings: '/settings',
   noteDetail: (noteId = ':noteId') => `/notes/${noteId}`,
   legacyNoteDetail: (noteId = ':id') => `/note/${noteId}`,
   shopDetail: (shopId = ':shopId') => `/shops/${shopId}`,

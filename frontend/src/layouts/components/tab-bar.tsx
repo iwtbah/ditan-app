@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { Plus } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import type { TabBarItem } from "@/types/common";
 
 type TabBarProps = {
@@ -10,6 +10,15 @@ type TabBarProps = {
 
 export const TabBar = ({ items }: TabBarProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const navigateTo = (path: string) => {
+    if (location.pathname === path) {
+      return;
+    }
+
+    navigate(path);
+  };
 
   const getActiveIndex = () => {
     let index = -1;
@@ -31,7 +40,7 @@ export const TabBar = ({ items }: TabBarProps) => {
   const activeIndex = getActiveIndex();
 
   return (
-    <div className="absolute inset-0 left-[16px] right-[16px] h-[68px] pointer-events-auto">
+    <div className="absolute inset-0 left-[16px] right-[16px] h-[68px] pointer-events-auto [touch-action:manipulation]">
       <div className="absolute inset-0 bg-background/70 dark:bg-[#14181c]/60 backdrop-blur-[24px] rounded-[26px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] border border-border/40 dark:border-white/10 overflow-hidden">
         {activeIndex !== -1 && (
           <div
@@ -57,7 +66,11 @@ export const TabBar = ({ items }: TabBarProps) => {
             <NavLink
               key={item.path}
               to={item.path}
-              className={`flex-1 flex flex-col items-center justify-center h-full gap-1 relative ${item.special ? "z-20 -mt-[28px]" : "z-10"}`}
+              onTouchEnd={(event) => {
+                event.preventDefault();
+                navigateTo(item.path);
+              }}
+              className={`flex-1 flex flex-col items-center justify-center h-full gap-1 relative select-none [touch-action:manipulation] ${item.special ? "z-20 -mt-[28px]" : "z-10"}`}
             >
               {item.special ? (
                 <div className="relative group flex items-center justify-center mt-3">

@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import { Navigate, createBrowserRouter, useParams } from 'react-router-dom';
 import { RouteErrorBoundary } from '@/components/feedback/route-error-boundary';
 import { ROUTE_PATHS } from '@/constants/routes';
+import { RequireAuth } from '@/features/auth/require-auth';
 import { MobileAppLayout } from '@/layouts/mobile-app-layout';
 import { PreviewWorkspaceLayout } from '@/layouts/preview-workspace-layout';
 import { WorkspaceLayout } from '@/layouts/workspace-layout';
@@ -42,28 +43,48 @@ function lazyPage(
   };
 }
 
+function createProtectedMobileRoute(
+  path: string,
+  importPage: () => Promise<LazyPageModule>,
+  componentExport: string = 'default',
+) {
+  return {
+    element: <RequireAuth />,
+    children: [
+      {
+        path,
+        lazy: lazyPage(importPage, componentExport),
+      },
+    ],
+  };
+}
+
 function createMobileAppRoutes() {
   return [
     {
       index: true,
       lazy: lazyPage(() => import('@/pages/home')),
     },
-    {
-      path: ROUTE_PATHS.following.slice(1),
-      lazy: lazyPage(() => import('@/pages/following')),
-    },
-    {
-      path: ROUTE_PATHS.ditan.slice(1),
-      lazy: lazyPage(() => import('@/pages/ditan')),
-    },
-    {
-      path: ROUTE_PATHS.publish.slice(1),
-      lazy: lazyPage(() => import('@/pages/publish')),
-    },
-    {
-      path: ROUTE_PATHS.my.slice(1),
-      lazy: lazyPage(() => import('@/pages/me')),
-    },
+    createProtectedMobileRoute(
+      ROUTE_PATHS.following.slice(1),
+      () => import('@/pages/following'),
+    ),
+    createProtectedMobileRoute(
+      ROUTE_PATHS.ditan.slice(1),
+      () => import('@/pages/ditan'),
+    ),
+    createProtectedMobileRoute(
+      ROUTE_PATHS.publish.slice(1),
+      () => import('@/pages/publish'),
+    ),
+    createProtectedMobileRoute(
+      ROUTE_PATHS.my.slice(1),
+      () => import('@/pages/me'),
+    ),
+    createProtectedMobileRoute(
+      ROUTE_PATHS.settings.slice(1),
+      () => import('@/pages/settings'),
+    ),
     {
       path: ROUTE_PATHS.search.slice(1),
       lazy: lazyPage(() => import('@/pages/search')),
@@ -94,7 +115,7 @@ function createMobileAppRoutes() {
     },
     {
       path: ROUTE_PATHS.login.slice(1),
-      element: <Navigate replace to={ROUTE_PATHS.my} />,
+      lazy: lazyPage(() => import('@/pages/auth/login')),
     },
   ];
 }

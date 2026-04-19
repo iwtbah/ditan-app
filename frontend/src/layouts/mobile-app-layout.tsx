@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Compass, Heart, Home, User } from "lucide-react";
+import { useMemo, useRef } from "react";
 import { Toaster } from "sonner";
 import { useLocation, useMatches, useOutlet } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routes";
@@ -11,16 +12,74 @@ interface MobileAppLayoutProps {
   showPreviewMeta?: boolean;
 }
 
+function isNoteDetailRoute(pathname: string) {
+  return pathname.startsWith("/notes/");
+}
+
+function isShopDetailRoute(pathname: string) {
+  return pathname.startsWith("/shops/");
+}
+
 export function MobileAppLayout({ showPreviewMeta = false }: MobileAppLayoutProps) {
   const location = useLocation();
   const matches = useMatches();
   const outlet = useOutlet();
   const { appState, subState } = usePreviewStateContext();
+  const previousPathnameRef = useRef(location.pathname);
   const currentPageMatch = [...matches].reverse().find((match) => {
     const handle = match.handle as { pageMeta?: PageRouteMeta } | undefined;
     return Boolean(handle?.pageMeta);
   }) as ({ handle?: { pageMeta?: PageRouteMeta } } | undefined);
   const currentPageMeta = currentPageMatch?.handle?.pageMeta;
+  const isAuthRoute = location.pathname.startsWith(ROUTE_PATHS.login);
+  const isSettingsRoute = location.pathname.startsWith(ROUTE_PATHS.settings);
+  const isDetailRoute =
+    isNoteDetailRoute(location.pathname) || isShopDetailRoute(location.pathname);
+  const previousPathname = previousPathnameRef.current;
+  const isAuthTransition =
+    isAuthRoute || previousPathname.startsWith(ROUTE_PATHS.login);
+  const wasDetailRoute =
+    isNoteDetailRoute(previousPathname) || isShopDetailRoute(previousPathname);
+  const isSettingsTransition =
+    isSettingsRoute || previousPathname.startsWith(ROUTE_PATHS.settings);
+  const isOverlayRoute = isSettingsRoute || isDetailRoute;
+  const wasOverlayRoute = previousPathname.startsWith(ROUTE_PATHS.settings) || wasDetailRoute;
+  const isOpeningOverlay = isOverlayRoute && !wasOverlayRoute;
+  const isClosingOverlay = !isOverlayRoute && wasOverlayRoute;
+
+  const pageTransition = useMemo(
+    () =>
+      isAuthTransition
+        ? {
+            initial: { opacity: 0.01 },
+            animate: { opacity: 1 },
+            exit: { opacity: 0.01 },
+            transition: { duration: 0.12, ease: "easeOut" as const },
+          }
+        : isOpeningOverlay
+          ? {
+              initial: { opacity: 1, x: 24 },
+              animate: { opacity: 1, x: 0 },
+              exit: { opacity: 1, x: 24 },
+              transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+            }
+        : isClosingOverlay
+          ? {
+              initial: { opacity: 1, x: 0, scale: 1 },
+              animate: { opacity: 1, x: 0, scale: 1 },
+              exit: { opacity: 1, x: 0, scale: 1 },
+              transition: { duration: 0.08, ease: "linear" as const },
+            }
+        : {
+            initial: { opacity: 0.88, x: 8, scale: 0.998 },
+            animate: { opacity: 1, x: 0, scale: 1 },
+            exit: { opacity: 0.96, x: -4, scale: 0.998 },
+            transition: { duration: 0.14, ease: [0.22, 1, 0.36, 1] as const },
+          },
+    [isAuthTransition, isClosingOverlay, isOpeningOverlay],
+  );
+
+  previousPathnameRef.current = location.pathname;
 
   const navItems = [
     { name: "首页", path: ROUTE_PATHS.home, icon: Home },
@@ -41,29 +100,40 @@ export function MobileAppLayout({ showPreviewMeta = false }: MobileAppLayoutProp
 
       <Toaster position="top-center" richColors theme="light" />
 
-      <div className="flex-1 overflow-hidden bg-background relative flex flex-col perspective-[1200px]">
-        <AnimatePresence mode="popLayout" initial={false}>
+      <div className="flex-1 overflow-hidden bg-background relative flex flex-col">
+        <AnimatePresence mode="sync" initial={false}>
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, x: 20, scale: 0.98 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -10, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="w-full h-full absolute inset-0 flex flex-col z-10"
-            style={{ transformOrigin: "center center" }}
+            initial={pageTransition.initial}
+            animate={pageTransition.animate}
+            exit={pageTransition.exit}
+            transition={pageTransition.transition}
+            className="w-full h-full absolute inset-0 flex flex-col z-10 will-change-transform"
           >
             {outlet}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {currentPageMeta?.showTabBar !== false && (
             <motion.div
               initial={false}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              exit={
+                isAuthTransition
+                  ? { opacity: 0 }
+                  : isSettingsTransition
+                    ? { opacity: 0 }
+                  : { y: 72, opacity: 0 }
+              }
+              transition={
+                isAuthTransition
+                  ? { duration: 0.12, ease: "easeOut" }
+                  : isSettingsTransition
+                    ? { duration: 0.1, ease: "easeOut" }
+                    : { duration: 0.18, ease: "easeOut" }
+              }
               className="absolute bottom-[12px] inset-x-0 pointer-events-none h-[68px] z-[100]"
             >
               <TabBar items={navItems} />

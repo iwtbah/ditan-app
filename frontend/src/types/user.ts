@@ -3,6 +3,11 @@ export interface BasicUserProfile {
   name: string;
 }
 
+export interface AuthUserProfile extends BasicUserProfile {
+  id: string;
+  phone: string;
+}
+
 export interface TimedUserProfile extends BasicUserProfile {
   time: string;
 }

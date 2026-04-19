@@ -3,10 +3,11 @@ import { MapPin, PenTool, Settings } from "lucide-react";
 import type { ProfileSummary } from "@/types/user";
 
 type MeProfileCardProps = {
+  onOpenSettings?: () => void;
   profile: ProfileSummary;
 };
 
-export const ProfileHeader = ({ profile }: MeProfileCardProps) => {
+export const ProfileHeader = ({ onOpenSettings, profile }: MeProfileCardProps) => {
   return (
     <section className="relative isolate overflow-hidden px-5 pb-5 pt-safe">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[300px] bg-gradient-to-b from-[#E8F0ED] via-[#F4F7F6] to-background" />
@@ -21,6 +22,7 @@ export const ProfileHeader = ({ profile }: MeProfileCardProps) => {
         <button
           aria-label="打开设置"
           type="button"
+          onClick={onOpenSettings}
           className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/45 bg-background/70 text-text-primary shadow-[0_2px_10px_rgba(0,0,0,0.05)] backdrop-blur-xl transition-transform active:scale-[0.96]"
         >
           <Settings size={18} strokeWidth={2.4} />
